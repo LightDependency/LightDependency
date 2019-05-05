@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/LightDependency/LightDependency.svg?branch=master)](https://travis-ci.org/LightDependency/LightDependency)
 ![Cocoapods platforms](https://img.shields.io/cocoapods/p/LightDependency.svg)
 [![pod](https://img.shields.io/cocoapods/v/LightDependency.svg)](https://cocoapods.org/pods/LightDependency)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
