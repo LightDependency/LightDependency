@@ -11,8 +11,8 @@ protocol RegistrationStore: class {
 }
 
 final class ContainerRegistrationStore: RegistrationStore {
-    private var noNameRegistrations: [TypeHash: [DependencyRegistrationType]] = [:]
-    private var namedRegistrations: [TypeHash: [String: DependencyRegistrationType]] = [:]
+    private var noNameRegistrations: [ObjectIdentifier: [DependencyRegistrationType]] = [:]
+    private var namedRegistrations: [ObjectIdentifier: [String: DependencyRegistrationType]] = [:]
 
     private var noNameRegistrationsLock = pthread_rwlock_t()
     private var namedRegistrationsLock = pthread_rwlock_t()
@@ -23,29 +23,29 @@ final class ContainerRegistrationStore: RegistrationStore {
     }
     
     func add<Dependency>(_ registration: AnyDependencyRegistration<Dependency>, withName name: String?) {
-        let typeHash = TypeHash(Dependency.self)
+        let typeIdentifier = ObjectIdentifier(Dependency.self)
         
         switch name {
         case .none:
             pthread_rwlock_wrlock(&noNameRegistrationsLock)
             defer { pthread_rwlock_unlock(&noNameRegistrationsLock) }
-            noNameRegistrations[typeHash, default: []].append(registration)
+            noNameRegistrations[typeIdentifier, default: []].append(registration)
 
         case .some(let name):
             pthread_rwlock_wrlock(&namedRegistrationsLock)
             defer { pthread_rwlock_unlock(&namedRegistrationsLock) }
-            namedRegistrations[typeHash, default: [:]][name] = registration
+            namedRegistrations[typeIdentifier, default: [:]][name] = registration
         }
     }
     
     func getRegistrations<Dependency>(withName name: String?) -> [AnyDependencyRegistration<Dependency>] {
-        let typeHash = TypeHash(Dependency.self)
+        let typeIdentifier = ObjectIdentifier(Dependency.self)
         
         switch name {
         case .some(let name):
             pthread_rwlock_rdlock(&namedRegistrationsLock)
             defer { pthread_rwlock_unlock(&namedRegistrationsLock) }
-            guard let registration = namedRegistrations[typeHash]?[name] as? AnyDependencyRegistration<Dependency>
+            guard let registration = namedRegistrations[typeIdentifier]?[name] as? AnyDependencyRegistration<Dependency>
                 else { return [] }
 
             return [registration]
@@ -54,7 +54,7 @@ final class ContainerRegistrationStore: RegistrationStore {
             pthread_rwlock_rdlock(&noNameRegistrationsLock)
             defer { pthread_rwlock_unlock(&noNameRegistrationsLock) }
 
-            guard let registrations = noNameRegistrations[typeHash] as? [AnyDependencyRegistration<Dependency>]
+            guard let registrations = noNameRegistrations[typeIdentifier] as? [AnyDependencyRegistration<Dependency>]
                 else { return [] }
 
             return registrations
@@ -62,13 +62,13 @@ final class ContainerRegistrationStore: RegistrationStore {
     }
     
     func getAllRegistrations<Dependency>(for type: Dependency.Type) -> [(String?, AnyDependencyRegistration<Dependency>)] {
-        let typeHash = TypeHash(Dependency.self)
+        let typeIdentifier = ObjectIdentifier(Dependency.self)
         
         var result: [(String?, AnyDependencyRegistration<Dependency>)] = []
 
         pthread_rwlock_rdlock(&noNameRegistrationsLock)
 
-        if let noNamedRegistrations = noNameRegistrations[typeHash] as? [AnyDependencyRegistration<Dependency>] {
+        if let noNamedRegistrations = noNameRegistrations[typeIdentifier] as? [AnyDependencyRegistration<Dependency>] {
             result.append(contentsOf: noNamedRegistrations.map { (nil, $0 )})
         }
 
@@ -76,7 +76,7 @@ final class ContainerRegistrationStore: RegistrationStore {
 
         pthread_rwlock_rdlock(&namedRegistrationsLock)
         
-        if let namedRegistrations = self.namedRegistrations[typeHash] as? [String: AnyDependencyRegistration<Dependency>] {
+        if let namedRegistrations = self.namedRegistrations[typeIdentifier] as? [String: AnyDependencyRegistration<Dependency>] {
             result.append(contentsOf: namedRegistrations.map { $0 })
         }
 

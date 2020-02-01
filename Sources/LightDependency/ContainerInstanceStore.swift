@@ -7,11 +7,11 @@ protocol InstanceStore: class {
 
 final class ContainerInstanceStore: InstanceStore {
     private struct TypeAndNameKey: Hashable {
-        var typeHash: TypeHash
-        var name: String
+        let typeIdentifier: ObjectIdentifier
+        let name: String
     }
     
-    private var defaultInstances: [TypeHash: Any] = [:]
+    private var defaultInstances: [ObjectIdentifier: Any] = [:]
     private var namedInstances: [TypeAndNameKey: Any] = [:]
 
     private var defaultInstancesLock = pthread_rwlock_t()
@@ -25,13 +25,13 @@ final class ContainerInstanceStore: InstanceStore {
     func getInstance<T>(with name: String?) -> T? {
         switch name {
         case .some(let name):
-            let key = TypeAndNameKey(typeHash: TypeHash(T.self), name: name)
+            let key = TypeAndNameKey(typeIdentifier: ObjectIdentifier(T.self), name: name)
             pthread_rwlock_rdlock(&namedInstancesLock)
             defer { pthread_rwlock_unlock(&namedInstancesLock) }
             return namedInstances[key] as? T
             
         case .none:
-            let key = TypeHash(T.self)
+            let key = ObjectIdentifier(T.self)
             pthread_rwlock_rdlock(&defaultInstancesLock)
             defer { pthread_rwlock_unlock(&defaultInstancesLock) }
             return defaultInstances[key] as? T
@@ -41,13 +41,13 @@ final class ContainerInstanceStore: InstanceStore {
     func save<T>(instance: T, name: String?) {
         switch name {
         case .some(let name):
-            let key = TypeAndNameKey(typeHash: TypeHash(T.self), name: name)
+            let key = TypeAndNameKey(typeIdentifier: ObjectIdentifier(T.self), name: name)
             pthread_rwlock_wrlock(&namedInstancesLock)
             defer { pthread_rwlock_unlock(&namedInstancesLock) }
             namedInstances[key] = instance
             
         case .none:
-            let key = TypeHash(T.self)
+            let key = ObjectIdentifier(T.self)
             pthread_rwlock_wrlock(&defaultInstancesLock)
             pthread_rwlock_unlock(&defaultInstancesLock)
             defaultInstances[key] = instance

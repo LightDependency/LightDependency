@@ -61,7 +61,6 @@
 		OBJ_59 /* RegistrationConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_23 /* RegistrationConfig.swift */; };
 		OBJ_61 /* Resolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_25 /* Resolver.swift */; };
 		OBJ_62 /* ResolvingStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_26 /* ResolvingStack.swift */; };
-		OBJ_63 /* TypeHash.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_27 /* TypeHash.swift */; };
 		OBJ_70 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
 		OBJ_89 /* LightDependency.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "LightDependency::LightDependency::Product" /* LightDependency.framework */; };
 /* End PBXBuildFile section */
@@ -125,7 +124,6 @@
 		OBJ_23 /* RegistrationConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationConfig.swift; sourceTree = "<group>"; };
 		OBJ_25 /* Resolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Resolver.swift; sourceTree = "<group>"; };
 		OBJ_26 /* ResolvingStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResolvingStack.swift; sourceTree = "<group>"; };
-		OBJ_27 /* TypeHash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeHash.swift; sourceTree = "<group>"; };
 		OBJ_6 /* Package.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		OBJ_9 /* FactoryRegistrationContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FactoryRegistrationContext.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -236,7 +234,6 @@
 				OBJ_22 /* Registration.swift */,
 				OBJ_23 /* RegistrationConfig.swift */,
 				OBJ_26 /* ResolvingStack.swift */,
-				OBJ_27 /* TypeHash.swift */,
 				EEF1A315207CF33200D428E1 /* DependencyKey.swift */,
 				EEF1A317207D1BD500D428E1 /* ProblemResolving.swift */,
 				EEF1A319207D1C5600D428E1 /* DependencySearch.swift */,
@@ -371,7 +368,6 @@
 				EE05642A227CA7C500218B2D /* DependencyRegistrationType.swift in Sources */,
 				EEFA27D2227B33E4000535ED /* ScopeContainer.swift in Sources */,
 				OBJ_62 /* ResolvingStack.swift in Sources */,
-				OBJ_63 /* TypeHash.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
   s.name             = 'LightDependency'
-  s.version          = '1.0.0'
-  s.summary          = 'Inversion of Control Container for Swift.'
+  s.version          = '1.0.1'
+  s.summary          = 'DI Container for Swift.'
   s.description      = <<-DESC
 TODO: Add long description of the pod here.
                        DESC
