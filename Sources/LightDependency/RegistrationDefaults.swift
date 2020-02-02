@@ -22,6 +22,6 @@ public struct RegistrationDefaults {
     }
 
     public static var `default`: RegistrationDefaults {
-        createNewInstancePerResolve
+        return createNewInstancePerResolve
     }
 }
