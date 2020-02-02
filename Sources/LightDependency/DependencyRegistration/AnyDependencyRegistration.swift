@@ -5,7 +5,7 @@ final class AnyDependencyRegistration<Dependency>: DependencyRegistrationType, D
     let key: DependencyKey
     let lifestyle: InstanceLifestyle
     let primaryDependency: DependencyKey?
-    var debugInfo: DebugInfo
+    let debugInfo: DebugInfo
 
     init<Registration: DependencyRegistrationType & DependencyFactoryType>(_ registration: Registration)
         where Registration.Dependency == Dependency {
