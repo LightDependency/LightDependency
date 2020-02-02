@@ -4,7 +4,7 @@ private struct ConfigSettings {
 }
 
 private struct AddRegistrationActionArgs {
-    let context: RegistrationContext
+    let context: RegistrationStorage
     let config: ConfigSettings
     let lock: RegistrationLock?
 }
@@ -12,13 +12,13 @@ private struct AddRegistrationActionArgs {
 public final class RegistrationConfig<Instance> {
     private typealias AddRegistrationAction = (AddRegistrationActionArgs) -> ()
 
-    private let factory: (Resolver) throws -> Instance
+    private let factory: (ResolverType) throws -> Instance
     private var configSettings: ConfigSettings = ConfigSettings()
     private let defaults: RegistrationDefaults
     private var addRegisterationActions: [AddRegistrationAction] = []
     private let debugInfo: DebugInfo
 
-    init(factory: @escaping (Resolver) throws -> Instance, defaults: RegistrationDefaults, debugInfo: DebugInfo) {
+    init(factory: @escaping (ResolverType) throws -> Instance, defaults: RegistrationDefaults, debugInfo: DebugInfo) {
         self.factory = factory
         self.defaults = defaults
         self.debugInfo = debugInfo
@@ -77,7 +77,7 @@ public final class RegistrationConfig<Instance> {
             return self
     }
 
-    func addToContext(_ context: RegistrationContext) {
+    func addToContext(_ context: RegistrationStorage) {
         if addRegisterationActions.count > 0 {
             let lock = { () -> RegistrationLock? in
                 guard addRegisterationActions.count > 1 else { return nil }

@@ -2,12 +2,12 @@ import XCTest
 import LightDependency
 
 final class InitializerRegistrationTests: XCTestCase {
-    var container: Container!
+    var container: DependencyContainer!
 
     override func setUp() {
         super.setUp()
 
-        container = LightContainer.createRootContainer()
+        container = DependencyContainer()
         container.configure(defaults: .createNewInstancePerResolve) { context in
             context.register { Type1() }
             context.register { Type2() }
@@ -21,7 +21,7 @@ final class InitializerRegistrationTests: XCTestCase {
 
     func testResolveResolvable0() throws {
         container.configure(defaults: .createNewInstancePerResolve) { context in
-            context.initContext.register(Resolvable0.init)
+            context.register(Resolvable0.init)
         }
 
         XCTAssertNoThrow(try container.resolve() as Resolvable0)
@@ -29,7 +29,7 @@ final class InitializerRegistrationTests: XCTestCase {
 
     func testResolveResolvable1() throws {
         container.configure(defaults: .createNewInstancePerResolve) { context in
-            context.initContext.register(Resolvable1.init)
+            context.register(Resolvable1.init)
         }
 
         XCTAssertNoThrow(try container.resolve() as Resolvable1)
@@ -37,7 +37,7 @@ final class InitializerRegistrationTests: XCTestCase {
 
     func testResolveResolvable2() throws {
         container.configure(defaults: .createNewInstancePerResolve) { context in
-            context.initContext.register(Resolvable2.init)
+            context.register(Resolvable2.init)
         }
 
         XCTAssertNoThrow(try container.resolve() as Resolvable2)
@@ -45,7 +45,7 @@ final class InitializerRegistrationTests: XCTestCase {
 
     func testResolveResolvable3() throws {
         container.configure(defaults: .createNewInstancePerResolve) { context in
-            context.initContext.register(Resolvable3.init)
+            context.register(Resolvable3.init)
         }
 
         XCTAssertNoThrow(try container.resolve() as Resolvable3)
@@ -53,7 +53,7 @@ final class InitializerRegistrationTests: XCTestCase {
 
     func testResolveResolvable4() throws {
         container.configure(defaults: .createNewInstancePerResolve) { context in
-            context.initContext.register(Resolvable4.init)
+            context.register(Resolvable4.init)
         }
 
         XCTAssertNoThrow(try container.resolve() as Resolvable4)
@@ -61,7 +61,7 @@ final class InitializerRegistrationTests: XCTestCase {
 
     func testResolveResolvable5() throws {
         container.configure(defaults: .createNewInstancePerResolve) { context in
-            context.initContext.register(Resolvable5.init)
+            context.register(Resolvable5.init)
         }
 
         XCTAssertNoThrow(try container.resolve() as Resolvable5)
@@ -69,7 +69,7 @@ final class InitializerRegistrationTests: XCTestCase {
 
     func testResolveResolvable6() throws {
         container.configure(defaults: .createNewInstancePerResolve) { context in
-            context.initContext.register(Resolvable6.init)
+            context.register(Resolvable6.init)
         }
 
         XCTAssertNoThrow(try container.resolve() as Resolvable6)
@@ -77,7 +77,7 @@ final class InitializerRegistrationTests: XCTestCase {
 
     func testResolveResolvable7() throws {
         container.configure(defaults: .createNewInstancePerResolve) { context in
-            context.initContext.register(Resolvable7.init)
+            context.register(Resolvable7.init)
         }
 
         XCTAssertNoThrow(try container.resolve() as Resolvable7)

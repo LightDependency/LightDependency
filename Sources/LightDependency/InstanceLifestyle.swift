@@ -5,9 +5,9 @@ public enum InstanceLifestyle {
     case namedScope(String)
 }
 
-struct SelectContainerContext<Container> {
-    let resolvingContainer: Container
-    let registrationOwnerContainer: Container
+struct SelectContainerContext {
+    let resolvingContainer: DependencyContainer
+    let registrationOwnerContainer: DependencyContainer
     let resolvingStack: ResolvingStack
     let dependencyKey: DependencyKey
     let file: StaticString
@@ -15,7 +15,7 @@ struct SelectContainerContext<Container> {
 }
 
 extension InstanceLifestyle {
-    func selectContainer<Container>(_ context: SelectContainerContext<Container>) throws -> Container? where Container : ScopeContainer {
+    func selectContainer(_ context: SelectContainerContext) throws -> DependencyContainer? {
         switch self {
         case .perResolve:
             return nil
@@ -28,7 +28,7 @@ extension InstanceLifestyle {
 
         case .namedScope(let scopeName):
             var storingIsForbidden = false
-            var resultContainer: Container?
+            var resultContainer: DependencyContainer?
 
             for container in context.resolvingContainer.hierarchy {
                 if container === context.registrationOwnerContainer.parent {

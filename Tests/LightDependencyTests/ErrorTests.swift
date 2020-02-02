@@ -2,10 +2,10 @@ import XCTest
 import LightDependency
 
 final class ErrorTests: XCTestCase {
-    var container: Container!
+    var container: DependencyContainer!
 
     override func setUp() {
-        container = LightContainer.createRootContainer()
+        container = DependencyContainer()
     }
 
     func testShouldThrowDependencyNotRegisteredError() {
@@ -20,9 +20,9 @@ final class ErrorTests: XCTestCase {
 
     func testShouldThrowRecursiveDependencyFoundError() {
         container.configure(defaults: .createNewInstancePerResolve) { context in
-            context.initContext.register(ClassA.init)
-            context.initContext.register(ClassB.init)
-            context.initContext.register(ClassC.init)
+            context.register(ClassA.init)
+            context.register(ClassB.init)
+            context.register(ClassC.init)
         }
 
         XCTAssertThrowsError(try container.resolve() as ClassA) { error in
@@ -33,13 +33,9 @@ final class ErrorTests: XCTestCase {
     }
 
     func testShouldThrowUsingScopedContainerForRegistrationFromChildContainerError() throws {
-        let parentContainer = try container.createChildContainer { context in
-            context.name = "parent"
-            context.scopes = ["parent-scope"]
-        }
+        let parentContainer = container.createChildContainer(name: "parent", scopes: ["parent-scope"])
 
-        let childContainer = try parentContainer.createChildContainer { context in
-            context.name = "child"
+        let childContainer = parentContainer.createChildContainer(name: "child") { context in
             context.with(defaults: .createNewInstancePerScope("parent-scope"), { context in
                 context.register { "dependency" }
             })
@@ -57,10 +53,7 @@ final class ErrorTests: XCTestCase {
             context.register { "dependency" }
         }
 
-        let childContainer = try container.createChildContainer { context in
-            context.name = "child"
-            context.scopes = ["other-scope"]
-        }
+        let childContainer = container.createChildContainer(name: "child", scopes: ["other-scope"])
 
         XCTAssertThrowsError(try childContainer.resolve() as String) { error in
             XCTAssertTrue(error is DependencyResolutionError)
@@ -94,13 +87,12 @@ final class ErrorTests: XCTestCase {
 
     func testShouldThrowIfSingletonInstanceFromParentDependsOnInstanceFromChildContainer() throws {
         container.configure(defaults: .registerSingletons) { context in
-            context.initContext.register(LogService.init)
+            context.register(LogService.init)
         }
 
-        let childContainer = try container.createChildContainer { context in
-            context.name = "child"
+        let childContainer = container.createChildContainer(name: "child") { context in
             context.with(defaults: .createNewInstancePerResolve, { context in
-                context.initContext.register(RealTimeService.init)
+                context.register(RealTimeService.init)
                     .asDependency(ofType: { $0 as TimeServiceType })
             })
         }
@@ -114,13 +106,12 @@ final class ErrorTests: XCTestCase {
 
     func testShouldNotThrowIfPerContainerInstanceFromParentDependsOnInstanceFromChildContainer() throws {
         container.configure(defaults: .createNewInstancePerContainer) { context in
-            context.initContext.register(LogService.init)
+            context.register(LogService.init)
         }
 
-        let childContainer = try container.createChildContainer { context in
-            context.name = "child"
+        let childContainer = container.createChildContainer(name: "child") { context in
             context.with(defaults: .createNewInstancePerResolve, { context in
-                context.initContext.register(RealTimeService.init)
+                context.register(RealTimeService.init)
                     .asDependency(ofType: { $0 as TimeServiceType })
             })
         }
@@ -130,13 +121,12 @@ final class ErrorTests: XCTestCase {
 
     func testShouldNotThrowIfPerResolveInstanceFromParentDependsOnInstanceFromChildContainer() throws {
         container.configure(defaults: .createNewInstancePerResolve) { context in
-            context.initContext.register(LogService.init)
+            context.register(LogService.init)
         }
 
-        let childContainer = try container.createChildContainer { context in
-            context.name = "child"
+        let childContainer = container.createChildContainer(name: "child") { context in
             context.with(defaults: .createNewInstancePerResolve, { context in
-                context.initContext.register(RealTimeService.init)
+                context.register(RealTimeService.init)
                     .asDependency(ofType: { $0 as TimeServiceType })
             })
         }
@@ -146,18 +136,14 @@ final class ErrorTests: XCTestCase {
 
     func testShouldThrowIfScopedInstanceFromParentDependsOnInstanceFromChildContainer() throws {
         container.configure(defaults: .createNewInstancePerScope("scope")) { context in
-            context.initContext.register(LogService.init)
+            context.register(LogService.init)
         }
 
-        let parentContainer = try container.createChildContainer { context in
-            context.name = "parent"
-            context.scopes = ["scope"]
-        }
+        let parentContainer = container.createChildContainer(name: "parent", scopes: ["scope"])
 
-        let childContainer = try parentContainer.createChildContainer { context in
-            context.name = "child"
+        let childContainer = parentContainer.createChildContainer(name: "child") { context in
             context.with(defaults: .createNewInstancePerResolve, { context in
-                context.initContext.register(RealTimeService.init)
+                context.register(RealTimeService.init)
                     .asDependency(ofType: { $0 as TimeServiceType })
             })
         }

@@ -2,17 +2,17 @@ import XCTest
 import LightDependency
 
 final class FactoryTests: XCTestCase {
-    var container: Container!
+    var container: DependencyContainer!
 
     override func setUp() {
-        container = LightContainer.createRootContainer()
+        container = DependencyContainer()
     }
 
     func testCreateNoThrowableFabricWithNoArguments() throws {
         typealias Factory = () -> String
 
         container.configure(defaults: .createNewInstancePerResolve) { ctx in
-            ctx.factoryContext.register(Factory.self)
+            ctx.registerFactory(Factory.self)
             ctx.registerInstance("registered string")
         }
 
@@ -25,7 +25,7 @@ final class FactoryTests: XCTestCase {
         typealias Factory = () throws -> String
 
         container.configure(defaults: .createNewInstancePerResolve) { ctx in
-            ctx.factoryContext.register(Factory.self)
+            ctx.registerFactory(Factory.self)
             ctx.registerInstance("registered string")
         }
 
@@ -38,8 +38,8 @@ final class FactoryTests: XCTestCase {
         typealias Factory = (Int) -> String
 
         container.configure(defaults: .createNewInstancePerResolve) { ctx in
-            ctx.factoryContext.register(Factory.self)
-            ctx.register { resolver in try "parameter: \(resolver.resolve() as Int)" }
+            ctx.registerFactory(Factory.self)
+            ctx.registerWithResolver { resolver in try "parameter: \(resolver.resolve() as Int)" }
         }
 
         let factory: Factory = try container.resolve()
@@ -52,8 +52,8 @@ final class FactoryTests: XCTestCase {
         typealias Factory = (Int) throws -> String
 
         container.configure(defaults: .createNewInstancePerResolve) { ctx in
-            ctx.factoryContext.register(Factory.self)
-            ctx.register { resolver in try "parameter: \(resolver.resolve() as Int)" }
+            ctx.registerFactory(Factory.self)
+            ctx.registerWithResolver { resolver in try "parameter: \(resolver.resolve() as Int)" }
         }
 
         let factory: Factory = try container.resolve()
@@ -66,8 +66,8 @@ final class FactoryTests: XCTestCase {
         typealias Factory = (Type1, Type2) -> ResultType
 
         container.configure(defaults: .createNewInstancePerResolve) { ctx in
-            ctx.factoryContext.register(Factory.self)
-            ctx.register { resolver in
+            ctx.registerFactory(Factory.self)
+            ctx.registerWithResolver { resolver in
                 try ResultType(resolver.resolve(), resolver.resolve())
             }
         }
@@ -81,8 +81,8 @@ final class FactoryTests: XCTestCase {
         typealias Factory = (Type1, Type2) throws -> ResultType
 
         container.configure(defaults: .createNewInstancePerResolve) { ctx in
-            ctx.factoryContext.register(Factory.self)
-            ctx.register { resolver in
+            ctx.registerFactory(Factory.self)
+            ctx.registerWithResolver { resolver in
                 try ResultType(resolver.resolve(), resolver.resolve())
             }
         }
@@ -96,8 +96,8 @@ final class FactoryTests: XCTestCase {
         typealias Factory = (Type1, Type2, Type3) -> ResultType
 
         container.configure(defaults: .createNewInstancePerResolve) { ctx in
-            ctx.factoryContext.register(Factory.self)
-            ctx.register { resolver in
+            ctx.registerFactory(Factory.self)
+            ctx.registerWithResolver { resolver in
                 try ResultType(resolver.resolve(), resolver.resolve(), resolver.resolve())
             }
         }
@@ -111,8 +111,8 @@ final class FactoryTests: XCTestCase {
         typealias Factory = (Type1, Type2, Type3) throws -> ResultType
 
         container.configure(defaults: .createNewInstancePerResolve) { ctx in
-            ctx.factoryContext.register(Factory.self)
-            ctx.register { resolver in
+            ctx.registerFactory(Factory.self)
+            ctx.registerWithResolver { resolver in
                 try ResultType(resolver.resolve(), resolver.resolve(), resolver.resolve())
             }
         }
@@ -126,8 +126,8 @@ final class FactoryTests: XCTestCase {
         typealias Factory = (Type1, Type2, Type3, Type4) -> ResultType
 
         container.configure(defaults: .createNewInstancePerResolve) { ctx in
-            ctx.factoryContext.register(Factory.self)
-            ctx.register { resolver in
+            ctx.registerFactory(Factory.self)
+            ctx.registerWithResolver { resolver in
                 try ResultType(resolver.resolve(), resolver.resolve(), resolver.resolve(),
                 resolver.resolve())
             }
@@ -142,8 +142,8 @@ final class FactoryTests: XCTestCase {
         typealias Factory = (Type1, Type2, Type3, Type4) throws -> ResultType
 
         container.configure(defaults: .createNewInstancePerResolve) { ctx in
-            ctx.factoryContext.register(Factory.self)
-            ctx.register { resolver in
+            ctx.registerFactory(Factory.self)
+            ctx.registerWithResolver { resolver in
                 try ResultType(resolver.resolve(), resolver.resolve(), resolver.resolve(),
                                resolver.resolve())
             }
@@ -158,8 +158,8 @@ final class FactoryTests: XCTestCase {
         typealias Factory = (Type1, Type2, Type3, Type4, Type5) -> ResultType
 
         container.configure(defaults: .createNewInstancePerResolve) { ctx in
-            ctx.factoryContext.register(Factory.self)
-            ctx.register { resolver in
+            ctx.registerFactory(Factory.self)
+            ctx.registerWithResolver { resolver in
                 try ResultType(resolver.resolve(), resolver.resolve(), resolver.resolve(),
                                resolver.resolve(), resolver.resolve())
             }
@@ -174,8 +174,8 @@ final class FactoryTests: XCTestCase {
         typealias Factory = (Type1, Type2, Type3, Type4, Type5) throws -> ResultType
 
         container.configure(defaults: .createNewInstancePerResolve) { ctx in
-            ctx.factoryContext.register(Factory.self)
-            ctx.register { resolver in
+            ctx.registerFactory(Factory.self)
+            ctx.registerWithResolver { resolver in
                 try ResultType(resolver.resolve(), resolver.resolve(), resolver.resolve(),
                                resolver.resolve(), resolver.resolve())
             }
@@ -190,8 +190,8 @@ final class FactoryTests: XCTestCase {
         typealias Factory = (Type1, Type2, Type3, Type4, Type5, Type6) -> ResultType
 
         container.configure(defaults: .createNewInstancePerResolve) { ctx in
-            ctx.factoryContext.register(Factory.self)
-            ctx.register { resolver in
+            ctx.registerFactory(Factory.self)
+            ctx.registerWithResolver { resolver in
                 try ResultType(resolver.resolve(), resolver.resolve(), resolver.resolve(),
                                resolver.resolve(), resolver.resolve(), resolver.resolve())
             }
@@ -206,8 +206,8 @@ final class FactoryTests: XCTestCase {
         typealias Factory = (Type1, Type2, Type3, Type4, Type5, Type6) throws -> ResultType
 
         container.configure(defaults: .createNewInstancePerResolve) { ctx in
-            ctx.factoryContext.register(Factory.self)
-            ctx.register { resolver in
+            ctx.registerFactory(Factory.self)
+            ctx.registerWithResolver { resolver in
                 try ResultType(resolver.resolve(), resolver.resolve(), resolver.resolve(),
                                resolver.resolve(), resolver.resolve(), resolver.resolve())
             }
@@ -222,8 +222,8 @@ final class FactoryTests: XCTestCase {
         typealias Factory = (Type1, Type2, Type3, Type4, Type5, Type6, Type7) -> ResultType
 
         container.configure(defaults: .createNewInstancePerResolve) { ctx in
-            ctx.factoryContext.register(Factory.self)
-            ctx.register { resolver in
+            ctx.registerFactory(Factory.self)
+            ctx.registerWithResolver { resolver in
                 try ResultType(resolver.resolve(), resolver.resolve(), resolver.resolve(),
                                resolver.resolve(), resolver.resolve(), resolver.resolve(),
                                resolver.resolve())
@@ -239,8 +239,8 @@ final class FactoryTests: XCTestCase {
         typealias Factory = (Type1, Type2, Type3, Type4, Type5, Type6, Type7) throws -> ResultType
 
         container.configure(defaults: .createNewInstancePerResolve) { ctx in
-            ctx.factoryContext.register(Factory.self)
-            ctx.register { resolver in
+            ctx.registerFactory(Factory.self)
+            ctx.registerWithResolver { resolver in
                 try ResultType(resolver.resolve(), resolver.resolve(), resolver.resolve(),
                                resolver.resolve(), resolver.resolve(), resolver.resolve(),
                                resolver.resolve())
@@ -256,7 +256,7 @@ final class FactoryTests: XCTestCase {
         typealias Factory = () throws -> String
 
         container.configure(defaults: .createNewInstancePerResolve) { ctx in
-            ctx.factoryContext.register(Factory.self)
+            ctx.registerFactory(Factory.self)
             ctx.register { _ throws -> String in throw UserError() }
         }
 
@@ -270,7 +270,7 @@ final class FactoryTests: XCTestCase {
         typealias Factory = (Int) throws -> String
 
         container.configure(defaults: .createNewInstancePerResolve) { ctx in
-            ctx.factoryContext.register(Factory.self)
+            ctx.registerFactory(Factory.self)
             ctx.register { _ throws -> String in throw UserError() }
         }
 
@@ -284,7 +284,7 @@ final class FactoryTests: XCTestCase {
         typealias Factory = (Type1, Type2) throws -> ResultType
 
         container.configure(defaults: .createNewInstancePerResolve) { ctx in
-            ctx.factoryContext.register(Factory.self)
+            ctx.registerFactory(Factory.self)
             ctx.register { _ throws -> ResultType in throw UserError() }
         }
 
@@ -298,7 +298,7 @@ final class FactoryTests: XCTestCase {
         typealias Factory = (Type1, Type2, Type3) throws -> ResultType
 
         container.configure(defaults: .createNewInstancePerResolve) { ctx in
-            ctx.factoryContext.register(Factory.self)
+            ctx.registerFactory(Factory.self)
             ctx.register { _ throws -> ResultType in throw UserError() }
         }
 
@@ -312,7 +312,7 @@ final class FactoryTests: XCTestCase {
         typealias Factory = (Type1, Type2, Type3, Type4) throws -> ResultType
 
         container.configure(defaults: .createNewInstancePerResolve) { ctx in
-            ctx.factoryContext.register(Factory.self)
+            ctx.registerFactory(Factory.self)
             ctx.register { _ throws -> ResultType in throw UserError() }
         }
 
@@ -326,7 +326,7 @@ final class FactoryTests: XCTestCase {
         typealias Factory = (Type1, Type2, Type3, Type4, Type5) throws -> ResultType
 
         container.configure(defaults: .createNewInstancePerResolve) { ctx in
-            ctx.factoryContext.register(Factory.self)
+            ctx.registerFactory(Factory.self)
             ctx.register { _ throws -> ResultType in throw UserError() }
         }
 
@@ -340,7 +340,7 @@ final class FactoryTests: XCTestCase {
         typealias Factory = (Type1, Type2, Type3, Type4, Type5, Type6) throws -> ResultType
 
         container.configure(defaults: .createNewInstancePerResolve) { ctx in
-            ctx.factoryContext.register(Factory.self)
+            ctx.registerFactory(Factory.self)
             ctx.register { _ throws -> ResultType in throw UserError() }
         }
 
@@ -354,7 +354,7 @@ final class FactoryTests: XCTestCase {
         typealias Factory = (Type1, Type2, Type3, Type4, Type5, Type6, Type7) throws -> ResultType
 
         container.configure(defaults: .createNewInstancePerResolve) { ctx in
-            ctx.factoryContext.register(Factory.self)
+            ctx.registerFactory(Factory.self)
             ctx.register { _ throws -> ResultType in throw UserError() }
         }
 

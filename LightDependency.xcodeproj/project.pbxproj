@@ -26,40 +26,34 @@
 		EE056428227C6AC500218B2D /* ErrorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE056427227C6AC400218B2D /* ErrorTests.swift */; };
 		EE05642A227CA7C500218B2D /* DependencyRegistrationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE056429227CA7C500218B2D /* DependencyRegistrationType.swift */; };
 		EEA9A7B2226EC726008EEEFB /* RegistrationDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEA9A7B1226EC726008EEEFB /* RegistrationDefaults.swift */; };
-		EEA9A7B4226EC971008EEEFB /* ConfiguarationContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEA9A7B3226EC971008EEEFB /* ConfiguarationContext.swift */; };
+		EEA9A7B4226EC971008EEEFB /* ConfigurationContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEA9A7B3226EC971008EEEFB /* ConfigurationContext.swift */; };
 		EEAC83FB227B4FD900B5560D /* RegistrationInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEAC83FA227B4FD900B5560D /* RegistrationInfo.swift */; };
 		EEAC83FD227C245300B5560D /* OverrideDependencyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEAC83FC227C245300B5560D /* OverrideDependencyTests.swift */; };
-		EEAC83FF227C2CD100B5560D /* Container+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEAC83FE227C2CD000B5560D /* Container+Extensions.swift */; };
 		EEE4B185227D69CE00B387A1 /* ResolveOptionalsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEE4B184227D69CE00B387A1 /* ResolveOptionalsTests.swift */; };
-		EEE4B187227D6E5900B387A1 /* InitializerRegistrationContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEE4B186227D6E5900B387A1 /* InitializerRegistrationContext.swift */; };
+		EEE4B187227D6E5900B387A1 /* ConfigurationContext.register.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEE4B186227D6E5900B387A1 /* ConfigurationContext.register.swift */; };
 		EEF1A316207CF33200D428E1 /* DependencyKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEF1A315207CF33200D428E1 /* DependencyKey.swift */; };
 		EEF1A318207D1BD500D428E1 /* ProblemResolving.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEF1A317207D1BD500D428E1 /* ProblemResolving.swift */; };
 		EEF1A31A207D1C5600D428E1 /* DependencySearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEF1A319207D1C5600D428E1 /* DependencySearch.swift */; };
 		EEF1A31C207D26A200D428E1 /* Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEF1A31B207D26A200D428E1 /* Types.swift */; };
-		EEFA279C22758A28000535ED /* LightContainerRegistrationContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEFA279B22758A28000535ED /* LightContainerRegistrationContext.swift */; };
 		EEFA27BF2275D190000535ED /* AnyDependencyRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEFA27BE2275D190000535ED /* AnyDependencyRegistration.swift */; };
 		EEFA27C12275D37C000535ED /* SynchronizedDependencyRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEFA27C02275D37C000535ED /* SynchronizedDependencyRegistration.swift */; };
 		EEFA27C32275D39C000535ED /* TransformedDependencyRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEFA27C22275D39C000535ED /* TransformedDependencyRegistration.swift */; };
 		EEFA27C522761D83000535ED /* DebugInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEFA27C422761D83000535ED /* DebugInfo.swift */; };
 		EEFA27C7227AC792000535ED /* FactoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEFA27C6227AC792000535ED /* FactoryTests.swift */; };
 		EEFA27CA227AD254000535ED /* UserError.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEFA27C9227AD254000535ED /* UserError.swift */; };
-		EEFA27CC227B033F000535ED /* ChildContainerContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEFA27CB227B033F000535ED /* ChildContainerContext.swift */; };
 		EEFA27CF227B1B53000535ED /* LifestyleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEFA27CE227B1B53000535ED /* LifestyleTests.swift */; };
 		EEFA27D0227B2DDD000535ED /* InitializerRegistrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86EA2B7CE61B388051DE0595 /* InitializerRegistrationTests.swift */; };
-		EEFA27D2227B33E4000535ED /* ScopeContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEFA27D1227B33E4000535ED /* ScopeContainer.swift */; };
-		OBJ_45 /* FactoryRegistrationContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* FactoryRegistrationContext.swift */; };
-		OBJ_46 /* Container.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* Container.swift */; };
+		OBJ_45 /* ConfigurationContext.registerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* ConfigurationContext.registerFactory.swift */; };
+		OBJ_46 /* ContainerResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* ContainerResolver.swift */; };
 		OBJ_47 /* ContainerInstanceStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* ContainerInstanceStore.swift */; };
 		OBJ_48 /* ContainerRegistrationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* ContainerRegistrationStore.swift */; };
-		OBJ_49 /* LightContainer+Extenstions.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_13 /* LightContainer+Extenstions.swift */; };
 		OBJ_50 /* InstanceLifestyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_14 /* InstanceLifestyle.swift */; };
 		OBJ_52 /* DependencyResolutionError.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_16 /* DependencyResolutionError.swift */; };
-		OBJ_53 /* constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_17 /* constant.swift */; };
-		OBJ_56 /* LightContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_20 /* LightContainer.swift */; };
-		OBJ_57 /* LightResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_21 /* LightResolver.swift */; };
+		OBJ_56 /* DependencyContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_20 /* DependencyContainer.swift */; };
+		OBJ_57 /* Resolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_21 /* Resolver.swift */; };
 		OBJ_58 /* Registration.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_22 /* Registration.swift */; };
 		OBJ_59 /* RegistrationConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_23 /* RegistrationConfig.swift */; };
-		OBJ_61 /* Resolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_25 /* Resolver.swift */; };
+		OBJ_61 /* ResolverType.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_25 /* ResolverType.swift */; };
 		OBJ_62 /* ResolvingStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_26 /* ResolvingStack.swift */; };
 		OBJ_70 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
 		OBJ_89 /* LightDependency.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "LightDependency::LightDependency::Product" /* LightDependency.framework */; };
@@ -89,43 +83,37 @@
 		EE056427227C6AC400218B2D /* ErrorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorTests.swift; sourceTree = "<group>"; };
 		EE056429227CA7C500218B2D /* DependencyRegistrationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DependencyRegistrationType.swift; sourceTree = "<group>"; };
 		EEA9A7B1226EC726008EEEFB /* RegistrationDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationDefaults.swift; sourceTree = "<group>"; };
-		EEA9A7B3226EC971008EEEFB /* ConfiguarationContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfiguarationContext.swift; sourceTree = "<group>"; };
+		EEA9A7B3226EC971008EEEFB /* ConfigurationContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationContext.swift; sourceTree = "<group>"; };
 		EEAC83FA227B4FD900B5560D /* RegistrationInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationInfo.swift; sourceTree = "<group>"; };
 		EEAC83FC227C245300B5560D /* OverrideDependencyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverrideDependencyTests.swift; sourceTree = "<group>"; };
-		EEAC83FE227C2CD000B5560D /* Container+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Container+Extensions.swift"; sourceTree = "<group>"; };
 		EEE4B184227D69CE00B387A1 /* ResolveOptionalsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResolveOptionalsTests.swift; sourceTree = "<group>"; };
-		EEE4B186227D6E5900B387A1 /* InitializerRegistrationContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitializerRegistrationContext.swift; sourceTree = "<group>"; };
+		EEE4B186227D6E5900B387A1 /* ConfigurationContext.register.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationContext.register.swift; sourceTree = "<group>"; };
 		EEF1A315207CF33200D428E1 /* DependencyKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DependencyKey.swift; sourceTree = "<group>"; };
 		EEF1A317207D1BD500D428E1 /* ProblemResolving.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProblemResolving.swift; sourceTree = "<group>"; };
 		EEF1A319207D1C5600D428E1 /* DependencySearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DependencySearch.swift; sourceTree = "<group>"; };
 		EEF1A31B207D26A200D428E1 /* Types.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Types.swift; sourceTree = "<group>"; };
-		EEFA279B22758A28000535ED /* LightContainerRegistrationContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightContainerRegistrationContext.swift; sourceTree = "<group>"; };
 		EEFA27BE2275D190000535ED /* AnyDependencyRegistration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyDependencyRegistration.swift; sourceTree = "<group>"; };
 		EEFA27C02275D37C000535ED /* SynchronizedDependencyRegistration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SynchronizedDependencyRegistration.swift; sourceTree = "<group>"; };
 		EEFA27C22275D39C000535ED /* TransformedDependencyRegistration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransformedDependencyRegistration.swift; sourceTree = "<group>"; };
 		EEFA27C422761D83000535ED /* DebugInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugInfo.swift; sourceTree = "<group>"; };
 		EEFA27C6227AC792000535ED /* FactoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FactoryTests.swift; sourceTree = "<group>"; };
 		EEFA27C9227AD254000535ED /* UserError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserError.swift; sourceTree = "<group>"; };
-		EEFA27CB227B033F000535ED /* ChildContainerContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildContainerContext.swift; sourceTree = "<group>"; };
 		EEFA27CE227B1B53000535ED /* LifestyleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LifestyleTests.swift; sourceTree = "<group>"; };
-		EEFA27D1227B33E4000535ED /* ScopeContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScopeContainer.swift; sourceTree = "<group>"; };
 		"LightDependency::LightDependency::Product" /* LightDependency.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = LightDependency.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"LightDependency::LightDependencyTests::Product" /* LightDependencyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = LightDependencyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		OBJ_10 /* Container.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Container.swift; sourceTree = "<group>"; };
+		OBJ_10 /* ContainerResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerResolver.swift; sourceTree = "<group>"; };
 		OBJ_11 /* ContainerInstanceStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerInstanceStore.swift; sourceTree = "<group>"; };
 		OBJ_12 /* ContainerRegistrationStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerRegistrationStore.swift; sourceTree = "<group>"; };
-		OBJ_13 /* LightContainer+Extenstions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LightContainer+Extenstions.swift"; sourceTree = "<group>"; };
 		OBJ_14 /* InstanceLifestyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstanceLifestyle.swift; sourceTree = "<group>"; };
 		OBJ_16 /* DependencyResolutionError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DependencyResolutionError.swift; sourceTree = "<group>"; };
-		OBJ_17 /* constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = constant.swift; sourceTree = "<group>"; };
-		OBJ_20 /* LightContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightContainer.swift; sourceTree = "<group>"; };
-		OBJ_21 /* LightResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightResolver.swift; sourceTree = "<group>"; };
+		OBJ_20 /* DependencyContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DependencyContainer.swift; sourceTree = "<group>"; };
+		OBJ_21 /* Resolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Resolver.swift; sourceTree = "<group>"; };
 		OBJ_22 /* Registration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Registration.swift; sourceTree = "<group>"; };
 		OBJ_23 /* RegistrationConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationConfig.swift; sourceTree = "<group>"; };
-		OBJ_25 /* Resolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Resolver.swift; sourceTree = "<group>"; };
+		OBJ_25 /* ResolverType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResolverType.swift; sourceTree = "<group>"; };
 		OBJ_26 /* ResolvingStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResolvingStack.swift; sourceTree = "<group>"; };
 		OBJ_6 /* Package.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
-		OBJ_9 /* FactoryRegistrationContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FactoryRegistrationContext.swift; sourceTree = "<group>"; };
+		OBJ_9 /* ConfigurationContext.registerFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationContext.registerFactory.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -215,22 +203,17 @@
 			isa = PBXGroup;
 			children = (
 				EEFA27BB2275D168000535ED /* DependencyRegistration */,
-				OBJ_10 /* Container.swift */,
-				OBJ_25 /* Resolver.swift */,
-				EEAC83FE227C2CD000B5560D /* Container+Extensions.swift */,
-				EEA9A7B3226EC971008EEEFB /* ConfiguarationContext.swift */,
-				OBJ_9 /* FactoryRegistrationContext.swift */,
-				EEE4B186227D6E5900B387A1 /* InitializerRegistrationContext.swift */,
+				OBJ_10 /* ContainerResolver.swift */,
+				EEA9A7B3226EC971008EEEFB /* ConfigurationContext.swift */,
+				OBJ_25 /* ResolverType.swift */,
+				OBJ_9 /* ConfigurationContext.registerFactory.swift */,
+				EEE4B186227D6E5900B387A1 /* ConfigurationContext.register.swift */,
 				OBJ_11 /* ContainerInstanceStore.swift */,
 				OBJ_12 /* ContainerRegistrationStore.swift */,
 				OBJ_14 /* InstanceLifestyle.swift */,
 				OBJ_16 /* DependencyResolutionError.swift */,
-				OBJ_17 /* constant.swift */,
-				OBJ_20 /* LightContainer.swift */,
-				OBJ_13 /* LightContainer+Extenstions.swift */,
-				EEFA27CB227B033F000535ED /* ChildContainerContext.swift */,
-				EEFA279B22758A28000535ED /* LightContainerRegistrationContext.swift */,
-				OBJ_21 /* LightResolver.swift */,
+				OBJ_20 /* DependencyContainer.swift */,
+				OBJ_21 /* Resolver.swift */,
 				OBJ_22 /* Registration.swift */,
 				OBJ_23 /* RegistrationConfig.swift */,
 				OBJ_26 /* ResolvingStack.swift */,
@@ -240,7 +223,6 @@
 				EEAC83FA227B4FD900B5560D /* RegistrationInfo.swift */,
 				EEA9A7B1226EC726008EEEFB /* RegistrationDefaults.swift */,
 				EEFA27C422761D83000535ED /* DebugInfo.swift */,
-				EEFA27D1227B33E4000535ED /* ScopeContainer.swift */,
 			);
 			name = LightDependency;
 			path = Sources/LightDependency;
@@ -339,34 +321,28 @@
 			buildActionMask = 0;
 			files = (
 				EEFA27C522761D83000535ED /* DebugInfo.swift in Sources */,
-				EEA9A7B4226EC971008EEEFB /* ConfiguarationContext.swift in Sources */,
+				EEA9A7B4226EC971008EEEFB /* ConfigurationContext.swift in Sources */,
 				EEAC83FB227B4FD900B5560D /* RegistrationInfo.swift in Sources */,
 				EEF1A31A207D1C5600D428E1 /* DependencySearch.swift in Sources */,
 				EEA9A7B2226EC726008EEEFB /* RegistrationDefaults.swift in Sources */,
-				OBJ_45 /* FactoryRegistrationContext.swift in Sources */,
-				OBJ_46 /* Container.swift in Sources */,
-				EEFA27CC227B033F000535ED /* ChildContainerContext.swift in Sources */,
+				OBJ_45 /* ConfigurationContext.registerFactory.swift in Sources */,
+				OBJ_46 /* ContainerResolver.swift in Sources */,
 				EEF1A316207CF33200D428E1 /* DependencyKey.swift in Sources */,
 				OBJ_47 /* ContainerInstanceStore.swift in Sources */,
 				OBJ_48 /* ContainerRegistrationStore.swift in Sources */,
 				EEFA27BF2275D190000535ED /* AnyDependencyRegistration.swift in Sources */,
-				OBJ_49 /* LightContainer+Extenstions.swift in Sources */,
 				OBJ_50 /* InstanceLifestyle.swift in Sources */,
 				OBJ_52 /* DependencyResolutionError.swift in Sources */,
 				EEFA27C32275D39C000535ED /* TransformedDependencyRegistration.swift in Sources */,
 				EEF1A318207D1BD500D428E1 /* ProblemResolving.swift in Sources */,
-				OBJ_53 /* constant.swift in Sources */,
-				OBJ_56 /* LightContainer.swift in Sources */,
-				EEE4B187227D6E5900B387A1 /* InitializerRegistrationContext.swift in Sources */,
+				OBJ_56 /* DependencyContainer.swift in Sources */,
+				EEE4B187227D6E5900B387A1 /* ConfigurationContext.register.swift in Sources */,
 				EEFA27C12275D37C000535ED /* SynchronizedDependencyRegistration.swift in Sources */,
-				OBJ_57 /* LightResolver.swift in Sources */,
-				EEFA279C22758A28000535ED /* LightContainerRegistrationContext.swift in Sources */,
+				OBJ_57 /* Resolver.swift in Sources */,
 				OBJ_58 /* Registration.swift in Sources */,
 				OBJ_59 /* RegistrationConfig.swift in Sources */,
-				EEAC83FF227C2CD100B5560D /* Container+Extensions.swift in Sources */,
-				OBJ_61 /* Resolver.swift in Sources */,
+				OBJ_61 /* ResolverType.swift in Sources */,
 				EE05642A227CA7C500218B2D /* DependencyRegistrationType.swift in Sources */,
-				EEFA27D2227B33E4000535ED /* ScopeContainer.swift in Sources */,
 				OBJ_62 /* ResolvingStack.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

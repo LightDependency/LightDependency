@@ -3,10 +3,10 @@ import LightDependency
 
 final class OverrideDependencyTests: XCTestCase {
     private let mockDate = Date(timeIntervalSinceReferenceDate: 1111)
-    var container: Container!
+    var container: DependencyContainer!
 
     override func setUp() {
-        container = LightContainer.createRootContainer()
+        container = DependencyContainer()
     }
 
     func testNoNamedPerResolveDependencyShouldBeOverriddenByChildContainer() throws {
@@ -14,13 +14,13 @@ final class OverrideDependencyTests: XCTestCase {
             context.register { "from root" }
         }
 
-        let childContainer = try container.createChildContainer { context in
+        let childContainer = container.createChildContainer { context in
             context.with(defaults: .createNewInstancePerResolve, { context in
                 context.register { "from child" }
             })
         }
 
-        let childChildContainer = try childContainer.createChildContainer()
+        let childChildContainer = childContainer.createChildContainer()
 
         XCTAssertEqual("from root", try container.resolve())
         XCTAssertEqual("from child", try childContainer.resolve())
@@ -32,13 +32,13 @@ final class OverrideDependencyTests: XCTestCase {
             context.register { "from root" }.withName("dep")
         }
 
-        let childContainer = try container.createChildContainer { context in
+        let childContainer = container.createChildContainer { context in
             context.with(defaults: .createNewInstancePerResolve, { context in
                 context.register { "from child" }.withName("dep")
             })
         }
 
-        let childChildContainer = try childContainer.createChildContainer()
+        let childChildContainer = childContainer.createChildContainer()
 
         XCTAssertEqual("from root", try container.asResolver().resolve(byName: "dep"))
         XCTAssertEqual("from child", try childContainer.asResolver().resolve(byName: "dep"))
@@ -50,13 +50,13 @@ final class OverrideDependencyTests: XCTestCase {
             context.register { "from root" }
         }
 
-        let childContainer = try container.createChildContainer { context in
+        let childContainer = container.createChildContainer { context in
             context.with(defaults: .registerSingletons, { context in
                 context.register { "from child" }
             })
         }
 
-        let childChildContainer = try childContainer.createChildContainer()
+        let childChildContainer = childContainer.createChildContainer()
 
         XCTAssertEqual("from root", try container.resolve())
         XCTAssertEqual("from child", try childContainer.resolve())
@@ -68,13 +68,13 @@ final class OverrideDependencyTests: XCTestCase {
             context.register { "from root" }.withName("dep")
         }
 
-        let childContainer = try container.createChildContainer { context in
+        let childContainer = container.createChildContainer { context in
             context.with(defaults: .registerSingletons, { context in
                 context.register { "from child" }.withName("dep")
             })
         }
 
-        let childChildContainer = try childContainer.createChildContainer()
+        let childChildContainer = childContainer.createChildContainer()
 
         XCTAssertEqual("from root", try container.asResolver().resolve(byName: "dep"))
         XCTAssertEqual("from child", try childContainer.asResolver().resolve(byName: "dep"))
@@ -86,13 +86,13 @@ final class OverrideDependencyTests: XCTestCase {
             context.register { "from root" }
         }
 
-        let childContainer = try container.createChildContainer { context in
+        let childContainer = container.createChildContainer { context in
             context.with(defaults: .createNewInstancePerContainer, { context in
                 context.register { "from child" }
             })
         }
 
-        let childChildContainer = try childContainer.createChildContainer()
+        let childChildContainer = childContainer.createChildContainer()
 
         XCTAssertEqual("from root", try container.resolve())
         XCTAssertEqual("from child", try childContainer.resolve())
@@ -104,13 +104,13 @@ final class OverrideDependencyTests: XCTestCase {
             context.register { "from root" }.withName("dep")
         }
 
-        let childContainer = try container.createChildContainer { context in
+        let childContainer = container.createChildContainer { context in
             context.with(defaults: .createNewInstancePerContainer, { context in
                 context.register { "from child" }.withName("dep")
             })
         }
 
-        let childChildContainer = try childContainer.createChildContainer()
+        let childChildContainer = childContainer.createChildContainer()
 
         XCTAssertEqual("from root", try container.asResolver().resolve(byName: "dep"))
         XCTAssertEqual("from child", try childContainer.asResolver().resolve(byName: "dep"))
@@ -122,18 +122,15 @@ final class OverrideDependencyTests: XCTestCase {
             context.register { "from root" }
         }
 
-        let parentContainer = try container.createChildContainer { context in
-            context.scopes = ["scope"]
-        }
+        let parentContainer = container.createChildContainer(scopes: ["scope"])
 
-        let childContainer = try parentContainer.createChildContainer { context in
-            context.scopes = ["scope"]
+        let childContainer = parentContainer.createChildContainer(scopes: ["scope"]) { context in
             context.with(defaults: .createNewInstancePerScope("scope"), { context in
                 context.register { "from child" }
             })
         }
 
-        let childChildContainer = try childContainer.createChildContainer()
+        let childChildContainer = childContainer.createChildContainer()
 
         XCTAssertEqual("from root", try parentContainer.resolve())
         XCTAssertEqual("from child", try childContainer.resolve())
@@ -145,18 +142,15 @@ final class OverrideDependencyTests: XCTestCase {
             context.register { "from root" }.withName("dep")
         }
 
-        let parentContainer = try container.createChildContainer { context in
-            context.scopes = ["scope"]
-        }
+        let parentContainer = container.createChildContainer(scopes: ["scope"])
 
-        let childContainer = try parentContainer.createChildContainer { context in
-            context.scopes = ["scope"]
+        let childContainer = parentContainer.createChildContainer(scopes: ["scope"]) { context in
             context.with(defaults: .createNewInstancePerScope("scope"), { context in
                 context.register { "from child" }.withName("dep")
             })
         }
 
-        let childChildContainer = try childContainer.createChildContainer()
+        let childChildContainer = childContainer.createChildContainer()
 
         XCTAssertEqual("from root", try parentContainer.asResolver().resolve(byName: "dep"))
         XCTAssertEqual("from child", try childContainer.asResolver().resolve(byName: "dep"))
@@ -169,7 +163,7 @@ final class OverrideDependencyTests: XCTestCase {
             context.register { "blue" }.withName("text")
         }
 
-        let childContainer = try container.createChildContainer { context in
+        let childContainer = container.createChildContainer { context in
             context.with(defaults: .createNewInstancePerResolve, { context in
                 context.register { "white" }.withName("fill")
                 context.register { "pink" }.withName("stroke")
@@ -205,7 +199,7 @@ final class OverrideDependencyTests: XCTestCase {
             context.register { "blue" }.withName("text")
         }
 
-        let childContainer = try container.createChildContainer { context in
+        let childContainer = container.createChildContainer { context in
             context.with(defaults: .createNewInstancePerResolve, { context in
                 context.register { "child-noname" }
                 context.register { "white" }.withName("fill")
@@ -227,14 +221,13 @@ final class OverrideDependencyTests: XCTestCase {
 
     func testChildContainerCanOverrideDependencyOfPerResolveInstanceFromParentContainer() throws {
         container.configure(defaults: .createNewInstancePerResolve) { context in
-            context.initContext.register(LogService.init)
-            context.initContext.register(RealTimeService.init)
+            context.register(LogService.init)
+            context.register(RealTimeService.init)
                 .asDependency(ofType: { $0 as TimeServiceType })
                 .perResolve()
         }
 
-        let childContainer = try container.createChildContainer { context in
-            context.name = "child"
+        let childContainer = container.createChildContainer(name: "child") { context in
             context.with(defaults: .createNewInstancePerResolve, { context in
                 context.register { MockTimeService(now: self.mockDate) }
                     .asDependency(ofType: { $0 as TimeServiceType })
@@ -250,14 +243,13 @@ final class OverrideDependencyTests: XCTestCase {
 
     func testChildContainerCanOverrideDependencyOfPerContainerInstanceFromParentContainer() throws {
         container.configure(defaults: .createNewInstancePerContainer) { context in
-            context.initContext.register(LogService.init)
-            context.initContext.register(RealTimeService.init)
+            context.register(LogService.init)
+            context.register(RealTimeService.init)
                 .asDependency(ofType: { $0 as TimeServiceType })
                 .perResolve()
         }
 
-        let childContainer = try container.createChildContainer { context in
-            context.name = "child"
+        let childContainer = container.createChildContainer(name: "child") { context in
             context.with(defaults: .createNewInstancePerResolve, { context in
                 context.register { MockTimeService(now: self.mockDate) }
                     .asDependency(ofType: { $0 as TimeServiceType })
@@ -273,14 +265,13 @@ final class OverrideDependencyTests: XCTestCase {
 
     func testChildContainerCanNotOverrideDependencyOfSingletonInstanceFromParentContainer() throws {
         container.configure(defaults: .registerSingletons) { context in
-            context.initContext.register(LogService.init)
-            context.initContext.register(RealTimeService.init)
+            context.register(LogService.init)
+            context.register(RealTimeService.init)
                 .asDependency(ofType: { $0 as TimeServiceType })
                 .perResolve()
         }
 
-        let childContainer = try container.createChildContainer { context in
-            context.name = "child"
+        let childContainer = container.createChildContainer(name: "child") { context in
             context.with(defaults: .createNewInstancePerResolve, { context in
                 context.register { MockTimeService(now: self.mockDate) }
                     .asDependency(ofType: { $0 as TimeServiceType })
@@ -296,19 +287,15 @@ final class OverrideDependencyTests: XCTestCase {
 
     func testChildContainerCanNotOverrideDependencyOfScopedInstanceFromParentContainer() throws {
         container.configure(defaults: .createNewInstancePerScope("scope")) { context in
-            context.initContext.register(LogService.init)
-            context.initContext.register(RealTimeService.init)
+            context.register(LogService.init)
+            context.register(RealTimeService.init)
                 .asDependency(ofType: { $0 as TimeServiceType })
                 .perResolve()
         }
 
-        let parentContainer = try container.createChildContainer { context in
-            context.name = "parent"
-            context.scopes = ["scope"]
-        }
+        let parentContainer = container.createChildContainer(name: "parent", scopes: ["scope"])
 
-        let childContainer = try parentContainer.createChildContainer { context in
-            context.name = "child"
+        let childContainer = parentContainer.createChildContainer(name: "child") { context in
             context.with(defaults: .createNewInstancePerResolve, { context in
                 context.register { MockTimeService(now: self.mockDate) }
                     .asDependency(ofType: { $0 as TimeServiceType })

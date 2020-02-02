@@ -2,10 +2,10 @@ import XCTest
 import LightDependency
 
 final class LifestyleTests: XCTestCase {
-    var container: Container!
+    var container: DependencyContainer!
 
     override func setUp() {
-        container = LightContainer.createRootContainer()
+        container = DependencyContainer()
     }
 
     func testSingleton() throws {
@@ -55,7 +55,7 @@ final class LifestyleTests: XCTestCase {
         XCTAssert(value1FromRoot === value2FromRoot)
         XCTAssertEqual(1, factoryCalled)
 
-        let childContainer = try container.createChildContainer()
+        let childContainer = container.createChildContainer()
         let value1FromChild: Type1 = try childContainer.resolve()
         let value2FromChild: Type1 = try childContainer.resolve()
 
@@ -73,11 +73,9 @@ final class LifestyleTests: XCTestCase {
             }
         }
 
-        let containerWithScope = try container.createChildContainer { context in
-            context.scopes = ["myScope"]
-        }
+        let containerWithScope = container.createChildContainer(scopes: ["myScope"])
 
-        let childContainer = try containerWithScope.createChildContainer()
+        let childContainer = containerWithScope.createChildContainer()
 
         XCTAssertThrowsError(try container.resolve() as Type1) { error in
             guard let error = error as? DependencyResolutionError,

@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'LightDependency'
-  s.version          = '1.0.1'
+  s.version          = '2.0-beta1'
   s.summary          = 'DI Container for Swift.'
   s.description      = <<-DESC
 TODO: Add long description of the pod here.

@@ -1,7 +1,7 @@
 func findDependencyRegistrations<Dependency>(
     ofType type: Dependency.Type,
     withName name: String?,
-    in resolvingContainer: LightContainer)
+    in resolvingContainer: DependencyContainer)
     -> [RegistrationInfo<Dependency>] {
         for container in resolvingContainer.hierarchy {
             let registrations: [AnyDependencyRegistration<Dependency>]
@@ -19,7 +19,7 @@ func findDependencyRegistrations<Dependency>(
 
 func findAllRegistrations<Dependency>(
     for type: Dependency.Type,
-    in resolvingContainer: LightContainer,
+    in resolvingContainer: DependencyContainer,
     target: ResolveMultipleInstancesSearchTarget)
     -> [RegistrationInfo<Dependency>] {
 
@@ -52,7 +52,7 @@ func findAllRegistrations<Dependency>(
 func resolveRecursive<Dependency>(
     stack: ResolvingStack,
     registrationInfo: RegistrationInfo<Dependency>,
-    resolvingContainer: LightContainer,
+    resolvingContainer: DependencyContainer,
     file: StaticString,
     line: UInt) throws
     -> Dependency {
@@ -95,11 +95,11 @@ func resolveRecursive<Dependency>(
 
         switch containerForInstanceStoring {
         case .some(let container):
-            let childResolver = LightResolver(resolvingContainer: container, stack: newStack)
+            let childResolver = Resolver(resolvingContainer: container, stack: newStack)
             return try registration.createAndSave(resolver: childResolver, store: container.instanceStore)
 
         case .none:
-            let childResolver = LightResolver(resolvingContainer: resolvingContainer, stack: newStack)
+            let childResolver = Resolver(resolvingContainer: resolvingContainer, stack: newStack)
             return try registration.create(resolver: childResolver)
         }
 }

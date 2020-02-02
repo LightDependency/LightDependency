@@ -35,15 +35,15 @@ public struct ResolvingStack: CustomStringConvertible {
 }
 
 public struct ResolvingStackItem: CustomStringConvertible {
-    public let resolvingContainer: LightContainer
-    public let registrationOwnerContainer: LightContainer
+    public let resolvingContainer: DependencyContainer
+    public let registrationOwnerContainer: DependencyContainer
     public let dependencyKey: DependencyKey
     public let registrationPlace: DebugInfo
     public let resolutionPlace: DebugInfo
     
     init(dependencyKey: DependencyKey,
-         resolvingContainer: LightContainer,
-         ownerContainer: LightContainer,
+         resolvingContainer: DependencyContainer,
+         ownerContainer: DependencyContainer,
          registrationPlace: DebugInfo,
          resolutionPlace: DebugInfo) {
         self.resolvingContainer = resolvingContainer
@@ -60,7 +60,7 @@ public struct ResolvingStackItem: CustomStringConvertible {
     func formatDescription(drop commonPath: String?) -> String {
         return "resolving \(dependencyKey) at \(resolutionPlace.formatDescription(drop: commonPath))."
             + " Dependency registered at \(registrationPlace.formatDescription(drop: commonPath))."
-            + " Containers: resolving – \(resolvingContainer.name); owner – \(registrationOwnerContainer.name)."
+            + " Containers: resolving – \(resolvingContainer.nameAndID); owner – \(registrationOwnerContainer.nameAndID)."
     }
 
     var allFileNames: [StaticString] {

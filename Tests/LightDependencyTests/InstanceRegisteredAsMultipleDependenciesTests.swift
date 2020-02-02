@@ -2,10 +2,10 @@ import XCTest
 import LightDependency
 
 final class InstanceRegisteredAsMultipleDependenciesTests: XCTestCase {
-    var container: Container!
+    var container: DependencyContainer!
 
     override func setUp() {
-        container = LightContainer.createRootContainer()
+        container = DependencyContainer()
     }
 
     func testSingletonInstanceShouldBeCreatedOnceForMultipleDependencies() throws {

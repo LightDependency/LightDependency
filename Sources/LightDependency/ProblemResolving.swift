@@ -16,10 +16,10 @@ func createHelpInfoForMultipleRegistrations<Dependency>(_ registrations: [Regist
     return "registrations found: \n" + lines.joined(separator: "\n")
 }
 
-func getAllowableRegistrations(in container: LightContainer) -> String {
+func getAllowableRegistrations(in container: DependencyContainer) -> String {
     var lines = ["Allowable registrations: "]
     for container in container.hierarchy {
-        lines.append("  registrations in container: \(container.name)")
+        lines.append("  registrations in container: \(container.nameAndID)")
         let registrations = container.registrationStore.getAllRegistrations()
         let primaryRegistrations = registrations.filter { $0.primaryDependency == nil }
         let primaryRegistrationsKeys = primaryRegistrations.map { $0.key }

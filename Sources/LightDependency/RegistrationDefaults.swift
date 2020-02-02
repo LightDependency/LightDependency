@@ -20,4 +20,8 @@ public struct RegistrationDefaults {
     public static func createNewInstancePerScope(_ scopeName: String) -> RegistrationDefaults {
         return RegistrationDefaults(instanceLifestyle: .namedScope(scopeName))
     }
+
+    public static var `default`: RegistrationDefaults {
+        createNewInstancePerResolve
+    }
 }
