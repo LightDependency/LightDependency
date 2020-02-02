@@ -7,14 +7,14 @@ public struct FactoryRegistrationContext {
     }
 }
 
-public extension RegistrationContext {
-    var factoryContext: FactoryRegistrationContext {
+extension RegistrationContext {
+    public var factoryContext: FactoryRegistrationContext {
         return FactoryRegistrationContext(context: self)
     }
 }
 
-public extension FactoryRegistrationContext {
-    func register<Result>(
+extension FactoryRegistrationContext {
+    public func register<Result>(
         _ type: (() -> Result).Type,
         file: StaticString = #file,
         line: UInt = #line) {
@@ -22,7 +22,7 @@ public extension FactoryRegistrationContext {
         registerFactory(Result.self, throwable: false, debugInfo: debugInfo)
     }
 
-    func register<Result>(
+    public func register<Result>(
         _ type: (() throws -> Result).Type,
         file: StaticString = #file,
         line: UInt = #line) {
@@ -30,7 +30,7 @@ public extension FactoryRegistrationContext {
         registerFactory(Result.self, throwable: true, debugInfo: debugInfo)
     }
 
-    func register<Dep, Result>(
+    public func register<Dep, Result>(
         _ type: ((Dep) -> Result).Type,
         file: StaticString = #file,
         line: UInt = #line) {
@@ -38,7 +38,7 @@ public extension FactoryRegistrationContext {
         registerFactory(Dep.self, Result.self, throwable: false, debugInfo: debugInfo)
     }
 
-    func register<Dep, Result>(
+    public func register<Dep, Result>(
         _ type: ((Dep) throws -> Result).Type,
         file: StaticString = #file,
         line: UInt = #line) {
@@ -46,7 +46,7 @@ public extension FactoryRegistrationContext {
         registerFactory(Dep.self, Result.self, throwable: true, debugInfo: debugInfo)
     }
 
-    func register<Dep, Dep2, Result>(
+    public func register<Dep, Dep2, Result>(
         _ type: ((Dep, Dep2) -> Result).Type,
         file: StaticString = #file,
         line: UInt = #line) {
@@ -54,7 +54,7 @@ public extension FactoryRegistrationContext {
         registerFactory(Dep.self, Dep2.self, Result.self, throwable: false, debugInfo: debugInfo)
     }
 
-    func register<Dep, Dep2, Result>(
+    public func register<Dep, Dep2, Result>(
         _ type: ((Dep, Dep2) throws -> Result).Type,
         file: StaticString = #file,
         line: UInt = #line) {
@@ -62,7 +62,7 @@ public extension FactoryRegistrationContext {
         registerFactory(Dep.self, Dep2.self, Result.self, throwable: true, debugInfo: debugInfo)
     }
 
-    func register<Dep, Dep2, Dep3, Result>(
+    public func register<Dep, Dep2, Dep3, Result>(
         _ type: ((Dep, Dep2, Dep3) -> Result).Type,
         file: StaticString = #file,
         line: UInt = #line) {
@@ -70,7 +70,7 @@ public extension FactoryRegistrationContext {
         registerFactory(Dep.self, Dep2.self, Dep3.self, Result.self, throwable: false, debugInfo: debugInfo)
     }
 
-    func register<Dep, Dep2, Dep3, Result>(
+    public func register<Dep, Dep2, Dep3, Result>(
         _ type: ((Dep, Dep2, Dep3) throws -> Result).Type,
         file: StaticString = #file,
         line: UInt = #line) {
@@ -78,7 +78,7 @@ public extension FactoryRegistrationContext {
         registerFactory(Dep.self, Dep2.self, Dep3.self, Result.self, throwable: true, debugInfo: debugInfo)
     }
 
-    func register<Dep, Dep2, Dep3, Dep4, Result>(
+    public func register<Dep, Dep2, Dep3, Dep4, Result>(
         _ type: ((Dep, Dep2, Dep3, Dep4) -> Result).Type,
         file: StaticString = #file,
         line: UInt = #line) {
@@ -86,7 +86,7 @@ public extension FactoryRegistrationContext {
         registerFactory(Dep.self, Dep2.self, Dep3.self, Dep4.self, Result.self, throwable: false, debugInfo: debugInfo)
     }
 
-    func register<Dep, Dep2, Dep3, Dep4, Result>(
+    public func register<Dep, Dep2, Dep3, Dep4, Result>(
         _ type: ((Dep, Dep2, Dep3, Dep4) throws -> Result).Type,
         file: StaticString = #file,
         line: UInt = #line) {
@@ -94,7 +94,7 @@ public extension FactoryRegistrationContext {
         registerFactory(Dep.self, Dep2.self, Dep3.self, Dep4.self, Result.self, throwable: true, debugInfo: debugInfo)
     }
 
-    func register<Dep, Dep2, Dep3, Dep4, Dep5, Result>(
+    public func register<Dep, Dep2, Dep3, Dep4, Dep5, Result>(
         _ type: ((Dep, Dep2, Dep3, Dep4, Dep5) -> Result).Type,
         file: StaticString = #file,
         line: UInt = #line) {
@@ -102,7 +102,7 @@ public extension FactoryRegistrationContext {
         registerFactory(Dep.self, Dep2.self, Dep3.self, Dep4.self, Dep5.self, Result.self, throwable: false, debugInfo: debugInfo)
     }
 
-    func register<Dep, Dep2, Dep3, Dep4, Dep5, Result>(
+    public func register<Dep, Dep2, Dep3, Dep4, Dep5, Result>(
         _ type: ((Dep, Dep2, Dep3, Dep4, Dep5) throws -> Result).Type,
         file: StaticString = #file,
         line: UInt = #line) {
@@ -110,7 +110,7 @@ public extension FactoryRegistrationContext {
         registerFactory(Dep.self, Dep2.self, Dep3.self, Dep4.self, Dep5.self, Result.self, throwable: true, debugInfo: debugInfo)
     }
 
-    func register<Dep, Dep2, Dep3, Dep4, Dep5, Dep6, Result>(
+    public func register<Dep, Dep2, Dep3, Dep4, Dep5, Dep6, Result>(
         _ type: ((Dep, Dep2, Dep3, Dep4, Dep5, Dep6) -> Result).Type,
         file: StaticString = #file,
         line: UInt = #line) {
@@ -118,7 +118,7 @@ public extension FactoryRegistrationContext {
         registerFactory(Dep.self, Dep2.self, Dep3.self, Dep4.self, Dep5.self, Dep6.self, Result.self, throwable: false, debugInfo: debugInfo)
     }
 
-    func register<Dep, Dep2, Dep3, Dep4, Dep5, Dep6, Result>(
+    public func register<Dep, Dep2, Dep3, Dep4, Dep5, Dep6, Result>(
         _ type: ((Dep, Dep2, Dep3, Dep4, Dep5, Dep6) throws -> Result).Type,
         file: StaticString = #file,
         line: UInt = #line) {
@@ -126,7 +126,7 @@ public extension FactoryRegistrationContext {
         registerFactory(Dep.self, Dep2.self, Dep3.self, Dep4.self, Dep5.self, Dep6.self, Result.self, throwable: true, debugInfo: debugInfo)
     }
 
-    func register<Dep, Dep2, Dep3, Dep4, Dep5, Dep6, Dep7, Result>(
+    public func register<Dep, Dep2, Dep3, Dep4, Dep5, Dep6, Dep7, Result>(
         _ type: ((Dep, Dep2, Dep3, Dep4, Dep5, Dep6, Dep7) -> Result).Type,
         file: StaticString = #file,
         line: UInt = #line) {
@@ -134,7 +134,7 @@ public extension FactoryRegistrationContext {
         registerFactory(Dep.self, Dep2.self, Dep3.self, Dep4.self, Dep5.self, Dep6.self, Dep7.self, Result.self, throwable: false, debugInfo: debugInfo)
     }
 
-    func register<Dep, Dep2, Dep3, Dep4, Dep5, Dep6, Dep7, Result>(
+    public func register<Dep, Dep2, Dep3, Dep4, Dep5, Dep6, Dep7, Result>(
         _ type: ((Dep, Dep2, Dep3, Dep4, Dep5, Dep6, Dep7) throws -> Result).Type,
         file: StaticString = #file,
         line: UInt = #line) {
@@ -143,9 +143,9 @@ public extension FactoryRegistrationContext {
     }
 }
 
-private extension FactoryRegistrationContext {
+extension FactoryRegistrationContext {
     /// add registration for () [throws] -> Result
-    func registerFactory<Result>(_: Result.Type, throwable: Bool, debugInfo: DebugInfo) {
+    private func registerFactory<Result>(_: Result.Type, throwable: Bool, debugInfo: DebugInfo) {
         typealias Factory = () throws -> Result
         typealias NoThrowableFactory = () -> Result
         
@@ -169,7 +169,7 @@ private extension FactoryRegistrationContext {
     }
     
     /// add registration for (Dep) [throws] -> Result
-    func registerFactory<Dep, Result>(_: Dep.Type, _: Result.Type, throwable: Bool, debugInfo: DebugInfo) {
+    private func registerFactory<Dep, Result>(_: Dep.Type, _: Result.Type, throwable: Bool, debugInfo: DebugInfo) {
         typealias Factory = (Dep) throws -> Result
         typealias NoThrowableFactory = (Dep) -> Result
         
@@ -196,7 +196,7 @@ private extension FactoryRegistrationContext {
     }
     
     /// add registration for (Dep, Dep2) [throws] -> Result
-    func registerFactory<Dep, Dep2, Result>(_: Dep.Type, _: Dep2.Type, _: Result.Type, throwable: Bool, debugInfo: DebugInfo) {
+    private func registerFactory<Dep, Dep2, Result>(_: Dep.Type, _: Dep2.Type, _: Result.Type, throwable: Bool, debugInfo: DebugInfo) {
         typealias Factory = (Dep, Dep2) throws -> Result
         typealias NoThrowableFactory = (Dep, Dep2) -> Result
         
@@ -224,7 +224,7 @@ private extension FactoryRegistrationContext {
     }
     
     /// add registration for (Dep, Dep2, Dep3) [throws] -> Result
-    func registerFactory<Dep, Dep2, Dep3, Result>(_: Dep.Type, _: Dep2.Type, _: Dep3.Type, _: Result.Type, throwable: Bool, debugInfo: DebugInfo) {
+    private func registerFactory<Dep, Dep2, Dep3, Result>(_: Dep.Type, _: Dep2.Type, _: Dep3.Type, _: Result.Type, throwable: Bool, debugInfo: DebugInfo) {
         typealias Factory = (Dep, Dep2, Dep3) throws -> Result
         typealias NoThrowableFactory = (Dep, Dep2, Dep3) -> Result
         
@@ -253,7 +253,7 @@ private extension FactoryRegistrationContext {
     }
     
     /// add registration for (Dep, Dep2, Dep3, Dep4) [throws] -> Result
-    func registerFactory<Dep, Dep2, Dep3, Dep4, Result>(_: Dep.Type, _: Dep2.Type, _: Dep3.Type, _: Dep4.Type, _: Result.Type, throwable: Bool, debugInfo: DebugInfo) {
+    private func registerFactory<Dep, Dep2, Dep3, Dep4, Result>(_: Dep.Type, _: Dep2.Type, _: Dep3.Type, _: Dep4.Type, _: Result.Type, throwable: Bool, debugInfo: DebugInfo) {
         typealias Factory = (Dep, Dep2, Dep3, Dep4) throws -> Result
         typealias NoThrowableFactory = (Dep, Dep2, Dep3, Dep4) -> Result
         
@@ -283,7 +283,7 @@ private extension FactoryRegistrationContext {
     }
     
     /// add registration for (Dep, Dep2, Dep3, Dep4, Dep5) [throws] -> Result
-    func registerFactory<Dep, Dep2, Dep3, Dep4, Dep5, Result>(_: Dep.Type, _: Dep2.Type, _: Dep3.Type, _: Dep4.Type, _: Dep5.Type, _: Result.Type, throwable: Bool, debugInfo: DebugInfo) {
+    private func registerFactory<Dep, Dep2, Dep3, Dep4, Dep5, Result>(_: Dep.Type, _: Dep2.Type, _: Dep3.Type, _: Dep4.Type, _: Dep5.Type, _: Result.Type, throwable: Bool, debugInfo: DebugInfo) {
         typealias Factory = (Dep, Dep2, Dep3, Dep4, Dep5) throws -> Result
         typealias NoThrowableFactory = (Dep, Dep2, Dep3, Dep4, Dep5) -> Result
         
@@ -314,7 +314,7 @@ private extension FactoryRegistrationContext {
     }
     
     /// add registration for (Dep, Dep2, Dep3, Dep4, Dep5, Dep6) [throws] -> Result
-    func registerFactory<Dep, Dep2, Dep3, Dep4, Dep5, Dep6, Result>(_: Dep.Type, _: Dep2.Type, _: Dep3.Type, _: Dep4.Type, _: Dep5.Type, _: Dep6.Type, _: Result.Type, throwable: Bool, debugInfo: DebugInfo) {
+    private func registerFactory<Dep, Dep2, Dep3, Dep4, Dep5, Dep6, Result>(_: Dep.Type, _: Dep2.Type, _: Dep3.Type, _: Dep4.Type, _: Dep5.Type, _: Dep6.Type, _: Result.Type, throwable: Bool, debugInfo: DebugInfo) {
         typealias Factory = (Dep, Dep2, Dep3, Dep4, Dep5, Dep6) throws -> Result
         typealias NoThrowableFactory = (Dep, Dep2, Dep3, Dep4, Dep5, Dep6) -> Result
         
@@ -346,7 +346,7 @@ private extension FactoryRegistrationContext {
     }
     
     /// add registration for (Dep, Dep2, Dep3, Dep4, Dep5, Dep6, Dep7) [throws] -> Result
-    func registerFactory<Dep, Dep2, Dep3, Dep4, Dep5, Dep6, Dep7, Result>(_: Dep.Type, _: Dep2.Type, _: Dep3.Type, _: Dep4.Type, _: Dep5.Type, _: Dep6.Type, _: Dep7.Type, _: Result.Type, throwable: Bool, debugInfo: DebugInfo) {
+    private func registerFactory<Dep, Dep2, Dep3, Dep4, Dep5, Dep6, Dep7, Result>(_: Dep.Type, _: Dep2.Type, _: Dep3.Type, _: Dep4.Type, _: Dep5.Type, _: Dep6.Type, _: Dep7.Type, _: Result.Type, throwable: Bool, debugInfo: DebugInfo) {
         typealias Factory = (Dep, Dep2, Dep3, Dep4, Dep5, Dep6, Dep7) throws -> Result
         typealias NoThrowableFactory = (Dep, Dep2, Dep3, Dep4, Dep5, Dep6, Dep7) -> Result
         
@@ -379,14 +379,14 @@ private extension FactoryRegistrationContext {
     }
 }
 
-private extension FactoryRegistrationContext {
-    func addRegistration<T>(_ debugInfo: DebugInfo, _ factory: @escaping (Resolver) throws -> T) {
+extension FactoryRegistrationContext {
+    private func addRegistration<T>(_ debugInfo: DebugInfo, _ factory: @escaping (Resolver) throws -> T) {
         context.add(Registration(lifestyle: .perResolve, factory: factory), debugInfo: debugInfo)
     }
 }
 
-private extension RegistrationContext {
-    func addInstance<T>(_ value: T, initiatedFrom: DebugInfo, file: StaticString = #file, line: UInt = #line) {
+extension RegistrationContext {
+    fileprivate func addInstance<T>(_ value: T, initiatedFrom: DebugInfo, file: StaticString = #file, line: UInt = #line) {
         let debugInfo = DebugInfo(file: file, line: line, initiatedFrom: initiatedFrom)
         add(Registration(lifestyle: .perResolve, factory: constant(value)), debugInfo: debugInfo)
     }

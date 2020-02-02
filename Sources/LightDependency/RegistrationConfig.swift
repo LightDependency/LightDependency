@@ -100,24 +100,24 @@ public final class RegistrationConfig<Instance> {
     }
 }
 
-public extension RegistrationConfig {
+extension RegistrationConfig {
     @discardableResult
-    func perResolve() -> RegistrationConfig {
+    public func perResolve() -> RegistrationConfig {
         return withLifestyle(.perResolve)
     }
     
     @discardableResult
-    func asSingleton() -> RegistrationConfig {
+    public func asSingleton() -> RegistrationConfig {
         return withLifestyle(.singleton)
     }
     
     @discardableResult
-    func perContainer() -> RegistrationConfig {
+    public func perContainer() -> RegistrationConfig {
         return withLifestyle(.perContainer)
     }
     
     @discardableResult
-    func perScope(_ name: String) -> RegistrationConfig {
+    public func perScope(_ name: String) -> RegistrationConfig {
         return withLifestyle(.namedScope(name))
     }
 }

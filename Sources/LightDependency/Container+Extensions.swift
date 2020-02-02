@@ -1,5 +1,5 @@
-public extension Container {
-    func resolve<Dependency>(file: StaticString = #file, line: UInt = #line) throws -> Dependency {
+extension Container {
+    public func resolve<Dependency>(file: StaticString = #file, line: UInt = #line) throws -> Dependency {
         return try resolve { resolver in try resolver.resolve(file: file, line: line) }
     }
 }
@@ -28,8 +28,8 @@ private final class ContainerResolver: Resolver {
     }
 }
 
-public extension Container {
-    func asResolver() -> Resolver {
+extension Container {
+    public func asResolver() -> Resolver {
         return ContainerResolver(container: self)
     }
 }

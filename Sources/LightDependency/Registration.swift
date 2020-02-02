@@ -35,8 +35,8 @@ public final class RegistrationLock {
     }
 }
 
-public extension Registration where Instance == Dependency {
-    init(name: String? = nil,
+extension Registration where Instance == Dependency {
+    public init(name: String? = nil,
          lifestyle: InstanceLifestyle,
          factory: @escaping (Resolver) throws -> Instance) {
         self.init(name: name, lifestyle: lifestyle, factory: factory, casting: { $0 })

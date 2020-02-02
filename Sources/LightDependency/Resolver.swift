@@ -10,18 +10,18 @@ public protocol Resolver {
     func resolveNamed<T>(from target: ResolveMultipleInstancesSearchTarget, file: StaticString, line: UInt) throws -> [String: T]
 }
 
-public extension Resolver {
-    func resolve<T>(_ file: StaticString = #file, _ line: UInt = #line) throws -> T {
+extension Resolver {
+    public func resolve<T>(_ file: StaticString = #file, _ line: UInt = #line) throws -> T {
         return try resolve(file: file, line: line)
     }
 
-    func resolve<T>(byName name: String, _ file: StaticString = #file, _ line: UInt = #line) throws -> T {
+    public func resolve<T>(byName name: String, _ file: StaticString = #file, _ line: UInt = #line) throws -> T {
         return try resolve(byName: name, file: file, line: line)
     }
 }
 
-public extension Resolver {
-    func resolveAll<T>(
+extension Resolver {
+    public func resolveAll<T>(
         from target: ResolveMultipleInstancesSearchTarget = .nearestContainer,
         _ file: StaticString = #file,
         _ line: UInt = #line)
@@ -29,7 +29,7 @@ public extension Resolver {
             return try resolveAll(from: target, file: file, line: line)
     }
 
-    func resolveNamed<T>(
+    public func resolveNamed<T>(
         from target: ResolveMultipleInstancesSearchTarget = .nearestContainer,
         _ file: StaticString = #file,
         _ line: UInt = #line)
@@ -38,21 +38,21 @@ public extension Resolver {
     }
 }
 
-public extension Resolver {
-    func resolveFew<T, T2>(file: StaticString = #file, line: UInt = #line)
+extension Resolver {
+    public func resolveFew<T, T2>(file: StaticString = #file, line: UInt = #line)
         throws -> (T, T2) {
             return try (resolve(file: file, line: line),
                         resolve(file: file, line: line))
     }
 
-    func resolveFew<T, T2, T3>(file: StaticString = #file, line: UInt = #line)
+    public func resolveFew<T, T2, T3>(file: StaticString = #file, line: UInt = #line)
         throws -> (T, T2, T3) {
             return try (resolve(file: file, line: line),
                         resolve(file: file, line: line),
                         resolve(file: file, line: line))
     }
 
-    func resolveFew<T, T2, T3, T4>(file: StaticString = #file, line: UInt = #line)
+    public func resolveFew<T, T2, T3, T4>(file: StaticString = #file, line: UInt = #line)
         throws -> (T, T2, T3, T4) {
             return try (resolve(file: file, line: line),
                         resolve(file: file, line: line),
@@ -60,7 +60,7 @@ public extension Resolver {
                         resolve(file: file, line: line))
     }
 
-    func resolveFew<T, T2, T3, T4, T5>(file: StaticString = #file, line: UInt = #line)
+    public func resolveFew<T, T2, T3, T4, T5>(file: StaticString = #file, line: UInt = #line)
         throws -> (T, T2, T3, T4, T5) {
             return try (resolve(file: file, line: line),
                         resolve(file: file, line: line),
@@ -69,7 +69,7 @@ public extension Resolver {
                         resolve(file: file, line: line))
     }
 
-    func resolveFew<T, T2, T3, T4, T5, T6>(file: StaticString = #file, line: UInt = #line)
+    public func resolveFew<T, T2, T3, T4, T5, T6>(file: StaticString = #file, line: UInt = #line)
         throws -> (T, T2, T3, T4, T5, T6) {
             return try (resolve(file: file, line: line),
                         resolve(file: file, line: line),
@@ -79,7 +79,7 @@ public extension Resolver {
                         resolve(file: file, line: line))
     }
 
-    func resolveFew<T, T2, T3, T4, T5, T6, T7>(file: StaticString = #file, line: UInt = #line)
+    public func resolveFew<T, T2, T3, T4, T5, T6, T7>(file: StaticString = #file, line: UInt = #line)
         throws -> (T, T2, T3, T4, T5, T6, T7) {
             return try (resolve(file: file, line: line),
                         resolve(file: file, line: line),

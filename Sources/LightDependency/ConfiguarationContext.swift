@@ -51,8 +51,8 @@ public final class ConfiguarationContext: RegistrationContext {
     }
 }
 
-public extension Container {
-    func configure(defaults: RegistrationDefaults, _ performRegistrations: (ConfiguarationContext) -> Void) {
+extension Container {
+    public func configure(defaults: RegistrationDefaults, _ performRegistrations: (ConfiguarationContext) -> Void) {
         addRegistrations { containerContext in
             let context = ConfiguarationContext(defaults: defaults)
             performRegistrations(context)
@@ -61,17 +61,17 @@ public extension Container {
     }
 }
 
-public extension RegistrationContext {
-    func with(defaults: RegistrationDefaults, _ performRegistrations: (ConfiguarationContext) -> Void) {
+extension RegistrationContext {
+    public func with(defaults: RegistrationDefaults, _ performRegistrations: (ConfiguarationContext) -> Void) {
         let context = ConfiguarationContext(defaults: defaults)
         performRegistrations(context)
         context.apply(to: self)
     }
 }
 
-public extension ConfiguarationContext {
+extension ConfiguarationContext {
     @discardableResult
-    func registerInstance<Instance>(_ instance: Instance) -> RegistrationConfig<Instance> {
+    public func registerInstance<Instance>(_ instance: Instance) -> RegistrationConfig<Instance> {
         return register(constant(instance)).perResolve()
     }
 }

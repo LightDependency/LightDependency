@@ -2,10 +2,10 @@ import Foundation
 
 private let PARENT_CONTAINER_NAME = "PARENT_CONTAINER_NAME"
 
-public extension LightContainer {
-    typealias ChildContainerFactory = (ChildContainerContext) -> Container
+extension LightContainer {
+    public typealias ChildContainerFactory = (ChildContainerContext) -> Container
 
-    static func createRootContainer() -> LightContainer {
+    public static func createRootContainer() -> LightContainer {
         let container = LightContainer(parent: nil, name: "root", scopes: [])
         container.configure(defaults: .createNewInstancePerResolve) { context in
             context.register(constant(Void()))
@@ -62,16 +62,16 @@ private func generateContainerName(_ resolver: LightResolver) -> String {
     return id
 }
 
-public extension Resolver {
-    func resolveParentContainer(file: StaticString = #file, line: UInt = #line) throws -> Container {
+extension Resolver {
+    public func resolveParentContainer(file: StaticString = #file, line: UInt = #line) throws -> Container {
         return try resolve(byName: PARENT_CONTAINER_NAME, file: file, line: line)
     }
 
-    func createChildContainer(file: StaticString = #file, line: UInt = #line) throws -> Container {
+    public func createChildContainer(file: StaticString = #file, line: UInt = #line) throws -> Container {
         return try resolve(file: file, line: line)
     }
 
-    func createChildContainer(
+    public func createChildContainer(
         file: StaticString = #file,
         line: UInt = #line,
         _ configure: (ChildContainerContext) throws -> Void)
@@ -83,12 +83,12 @@ public extension Resolver {
     }
 }
 
-public extension Container {
-    func createChildContainer(file: StaticString = #file, line: UInt = #line) throws -> Container {
+extension Container {
+    public func createChildContainer(file: StaticString = #file, line: UInt = #line) throws -> Container {
         return try resolve { resolver in try resolver.createChildContainer(file: file, line: line) }
     }
 
-    func createChildContainer(
+    public func createChildContainer(
         file: StaticString = #file,
         line: UInt = #line,
         _ configure: (ChildContainerContext) throws -> Void)
