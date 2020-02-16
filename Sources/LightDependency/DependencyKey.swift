@@ -17,3 +17,10 @@ extension DependencyKey: CustomStringConvertible {
         return "[\(type)\( name.map { " \"\($0)\"" } ?? "" )]"
     }
 }
+
+extension DependencyKey: Hashable {
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(ObjectIdentifier(type))
+        hasher.combine(name)
+    }
+}

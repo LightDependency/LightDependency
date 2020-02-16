@@ -88,7 +88,7 @@ func resolveRecursive<Dependency>(
 
         let containerForInstanceStoring = try registration.lifestyle.selectContainer(selectContainerArgs)
 
-        if let instance: Dependency = containerForInstanceStoring?.instanceStore
+        if let instance: Dependency = containerForInstanceStoring?.instanceStorage
             .getInstance(with: registrationInfo.name) {
             return instance
         }
@@ -96,7 +96,7 @@ func resolveRecursive<Dependency>(
         switch containerForInstanceStoring {
         case .some(let container):
             let childResolver = Resolver(resolvingContainer: container, stack: newStack)
-            return try registration.createAndSave(resolver: childResolver, store: container.instanceStore)
+            return try registration.createAndSave(resolver: childResolver, storage: container.instanceStorage)
 
         case .none:
             let childResolver = Resolver(resolvingContainer: resolvingContainer, stack: newStack)

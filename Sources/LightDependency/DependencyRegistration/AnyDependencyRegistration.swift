@@ -1,6 +1,6 @@
 final class AnyDependencyRegistration<Dependency>: DependencyRegistrationType, DependencyFactoryType {
     private let _create: (Resolver) throws -> Dependency
-    private let _createAndSave: (Resolver, InstanceStore) throws -> Dependency
+    private let _createAndSave: (Resolver, InstanceStorage) throws -> Dependency
 
     let key: DependencyKey
     let lifestyle: InstanceLifestyle
@@ -21,7 +21,7 @@ final class AnyDependencyRegistration<Dependency>: DependencyRegistrationType, D
         return try _create(resolver)
     }
 
-    func createAndSave(resolver: Resolver, store: InstanceStore) throws -> Dependency {
-        return try _createAndSave(resolver, store)
+    func createAndSave(resolver: Resolver, storage: InstanceStorage) throws -> Dependency {
+        return try _createAndSave(resolver, storage)
     }
 }

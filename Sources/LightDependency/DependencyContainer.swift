@@ -7,7 +7,7 @@ public final class DependencyContainer {
     public let name: String?
     public let id: String
     let parent: DependencyContainer?
-    let instanceStore = ContainerInstanceStore()
+    let instanceStorage = InstanceStorage()
     let registrationStorage: ContainerRegistrationStorage
     let scopes: Set<String>
 
@@ -95,8 +95,6 @@ extension DependencyContainer {
         .withName(DependencyContainer.resolvingContainerName)
 
         return context
-    }
-}
     }
 }
 

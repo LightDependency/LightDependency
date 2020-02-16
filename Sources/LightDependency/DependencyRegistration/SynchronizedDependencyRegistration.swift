@@ -23,18 +23,18 @@ final class SynchronizedDependencyRegistration<Instance, Dependency>: Dependency
         return try registration.casting(registration.factory(resolver))
     }
 
-    func createAndSave(resolver: Resolver, store: InstanceStore) throws -> Dependency {
+    func createAndSave(resolver: Resolver, storage: InstanceStorage) throws -> Dependency {
         let lock = registration.lock ?? self.lock
 
         lock.lock()
         defer { lock.unlock() }
 
-        if let existingInstance: Instance = store.getInstance(with: registration.name) {
+        if let existingInstance: Instance = storage.getInstance(with: registration.name) {
             return registration.casting(existingInstance)
         }
 
         let instance = try registration.factory(resolver)
-        store.save(instance: instance, name: registration.name)
+        storage.save(instance: instance, name: registration.name)
         return registration.casting(instance)
     }
 
