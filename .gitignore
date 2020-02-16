@@ -51,3 +51,4 @@ Carthage/Build
 
 .build/
 Packages/
+.swiftpm
