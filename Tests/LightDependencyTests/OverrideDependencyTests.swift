@@ -3,14 +3,9 @@ import LightDependency
 
 final class OverrideDependencyTests: XCTestCase {
     private let mockDate = Date(timeIntervalSinceReferenceDate: 1111)
-    var container: DependencyContainer!
-
-    override func setUp() {
-        container = DependencyContainer()
-    }
 
     func testNoNamedPerResolveDependencyShouldBeOverriddenByChildContainer() throws {
-        container.configure(defaults: .createNewInstancePerResolve) { context in
+        let container = DependencyContainer(defaults: .createNewInstancePerResolve) { context in
             context.register { "from root" }
         }
 
@@ -28,7 +23,7 @@ final class OverrideDependencyTests: XCTestCase {
     }
 
     func testNamedPerResolveDependencyShouldBeOverriddenByChildContainer() throws {
-        container.configure(defaults: .createNewInstancePerResolve) { context in
+        let container = DependencyContainer(defaults: .createNewInstancePerResolve) { context in
             context.register { "from root" }.withName("dep")
         }
 
@@ -46,7 +41,7 @@ final class OverrideDependencyTests: XCTestCase {
     }
 
     func testNoNamedSingletonDependencyShouldBeOverriddenByChildContainer() throws {
-        container.configure(defaults: .registerSingletons) { context in
+        let container = DependencyContainer(defaults: .registerSingletons) { context in
             context.register { "from root" }
         }
 
@@ -64,7 +59,7 @@ final class OverrideDependencyTests: XCTestCase {
     }
 
     func testNamedSingletonDependencyShouldBeOverriddenByChildContainer() throws {
-        container.configure(defaults: .registerSingletons) { context in
+        let container = DependencyContainer(defaults: .registerSingletons) { context in
             context.register { "from root" }.withName("dep")
         }
 
@@ -82,7 +77,7 @@ final class OverrideDependencyTests: XCTestCase {
     }
 
     func testNoNamedPerContainerDependencyShouldBeOverriddenByChildContainer() throws {
-        container.configure(defaults: .createNewInstancePerContainer) { context in
+        let container = DependencyContainer(defaults: .createNewInstancePerContainer) { context in
             context.register { "from root" }
         }
 
@@ -100,7 +95,7 @@ final class OverrideDependencyTests: XCTestCase {
     }
 
     func testNamedPerContainerDependencyShouldBeOverriddenByChildContainer() throws {
-        container.configure(defaults: .createNewInstancePerContainer) { context in
+        let container = DependencyContainer(defaults: .createNewInstancePerContainer) { context in
             context.register { "from root" }.withName("dep")
         }
 
@@ -118,7 +113,7 @@ final class OverrideDependencyTests: XCTestCase {
     }
 
     func testNoNamedPerScopeDependencyShouldBeOverriddenByChildContainer() throws {
-        container.configure(defaults: .createNewInstancePerScope("scope")) { context in
+        let container = DependencyContainer(defaults: .createNewInstancePerScope("scope")) { context in
             context.register { "from root" }
         }
 
@@ -138,7 +133,7 @@ final class OverrideDependencyTests: XCTestCase {
     }
 
     func testNamedPerScopeDependencyShouldBeOverriddenByChildContainer() throws {
-        container.configure(defaults: .createNewInstancePerScope("scope")) { context in
+        let container = DependencyContainer(defaults: .createNewInstancePerScope("scope")) { context in
             context.register { "from root" }.withName("dep")
         }
 
@@ -158,7 +153,7 @@ final class OverrideDependencyTests: XCTestCase {
     }
 
     func testNamedDependencyShouldBeOverriddenForResolvingMultipleNamedDependencies() throws {
-        container.configure(defaults: .createNewInstancePerResolve) { context in
+        let container = DependencyContainer(defaults: .createNewInstancePerResolve) { context in
             context.register { "red" }.withName("fill")
             context.register { "blue" }.withName("text")
         }
@@ -193,7 +188,7 @@ final class OverrideDependencyTests: XCTestCase {
     }
 
     func testNamedDependencyShouldBeOverriddenForResolvingMultipleDependencies() throws {
-        container.configure(defaults: .createNewInstancePerResolve) { context in
+        let container = DependencyContainer(defaults: .createNewInstancePerResolve) { context in
             context.register { "root-noname" }
             context.register { "red" }.withName("fill")
             context.register { "blue" }.withName("text")
@@ -220,7 +215,7 @@ final class OverrideDependencyTests: XCTestCase {
     }
 
     func testChildContainerCanOverrideDependencyOfPerResolveInstanceFromParentContainer() throws {
-        container.configure(defaults: .createNewInstancePerResolve) { context in
+        let container = DependencyContainer(defaults: .createNewInstancePerResolve) { context in
             context.register(LogService.init)
             context.register(RealTimeService.init)
                 .asDependency(ofType: { $0 as TimeServiceType })
@@ -242,7 +237,7 @@ final class OverrideDependencyTests: XCTestCase {
     }
 
     func testChildContainerCanOverrideDependencyOfPerContainerInstanceFromParentContainer() throws {
-        container.configure(defaults: .createNewInstancePerContainer) { context in
+        let container = DependencyContainer(defaults: .createNewInstancePerContainer) { context in
             context.register(LogService.init)
             context.register(RealTimeService.init)
                 .asDependency(ofType: { $0 as TimeServiceType })
@@ -264,7 +259,7 @@ final class OverrideDependencyTests: XCTestCase {
     }
 
     func testChildContainerCanNotOverrideDependencyOfSingletonInstanceFromParentContainer() throws {
-        container.configure(defaults: .registerSingletons) { context in
+        let container = DependencyContainer(defaults: .registerSingletons) { context in
             context.register(LogService.init)
             context.register(RealTimeService.init)
                 .asDependency(ofType: { $0 as TimeServiceType })
@@ -286,7 +281,7 @@ final class OverrideDependencyTests: XCTestCase {
     }
 
     func testChildContainerCanNotOverrideDependencyOfScopedInstanceFromParentContainer() throws {
-        container.configure(defaults: .createNewInstancePerScope("scope")) { context in
+        let container = DependencyContainer(defaults: .createNewInstancePerScope("scope")) { context in
             context.register(LogService.init)
             context.register(RealTimeService.init)
                 .asDependency(ofType: { $0 as TimeServiceType })

@@ -2,16 +2,11 @@ import XCTest
 import LightDependency
 
 final class InstanceRegisteredAsMultipleDependenciesTests: XCTestCase {
-    var container: DependencyContainer!
-
-    override func setUp() {
-        container = DependencyContainer()
-    }
 
     func testSingletonInstanceShouldBeCreatedOnceForMultipleDependencies() throws {
         var factoryCallCounter = 0
 
-        container.configure(defaults: .registerSingletons) { context in
+        let container = DependencyContainer(defaults: .registerSingletons) { context in
             context
                 .register { () -> SuperService in
                     factoryCallCounter += 1

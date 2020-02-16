@@ -20,7 +20,7 @@ func getAllowableRegistrations(in container: DependencyContainer) -> String {
     var lines = ["Allowable registrations: "]
     for container in container.hierarchy {
         lines.append("  registrations in container: \(container.nameAndID)")
-        let registrations = container.registrationStore.getAllRegistrations()
+        let registrations = container.registrationStorage.getAllRegistrations()
         let primaryRegistrations = registrations.filter { $0.primaryDependency == nil }
         let primaryRegistrationsKeys = primaryRegistrations.map { $0.key }
         lines.append(contentsOf: primaryRegistrationsKeys.map { "    " + $0.description })

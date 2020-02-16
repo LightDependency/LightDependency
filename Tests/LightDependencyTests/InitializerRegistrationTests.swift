@@ -2,25 +2,20 @@ import XCTest
 import LightDependency
 
 final class InitializerRegistrationTests: XCTestCase {
-    var container: DependencyContainer!
 
-    override func setUp() {
-        super.setUp()
-
-        container = DependencyContainer()
-        container.configure(defaults: .createNewInstancePerResolve) { context in
-            context.register { Type1() }
-            context.register { Type2() }
-            context.register { Type3() }
-            context.register { Type4() }
-            context.register { Type5() }
-            context.register { Type6() }
-            context.register { Type7() }
-        }
+    private func registerDefaultTypes(_ context: ConfigurationContext) {
+        context.register { Type1() }
+        context.register { Type2() }
+        context.register { Type3() }
+        context.register { Type4() }
+        context.register { Type5() }
+        context.register { Type6() }
+        context.register { Type7() }
     }
 
     func testResolveResolvable0() throws {
-        container.configure(defaults: .createNewInstancePerResolve) { context in
+        let container = DependencyContainer(defaults: .createNewInstancePerResolve) { context in
+            registerDefaultTypes(context)
             context.register(Resolvable0.init)
         }
 
@@ -28,7 +23,8 @@ final class InitializerRegistrationTests: XCTestCase {
     }
 
     func testResolveResolvable1() throws {
-        container.configure(defaults: .createNewInstancePerResolve) { context in
+        let container = DependencyContainer(defaults: .createNewInstancePerResolve) { context in
+            registerDefaultTypes(context)
             context.register(Resolvable1.init)
         }
 
@@ -36,7 +32,8 @@ final class InitializerRegistrationTests: XCTestCase {
     }
 
     func testResolveResolvable2() throws {
-        container.configure(defaults: .createNewInstancePerResolve) { context in
+        let container = DependencyContainer(defaults: .createNewInstancePerResolve) { context in
+            registerDefaultTypes(context)
             context.register(Resolvable2.init)
         }
 
@@ -44,7 +41,8 @@ final class InitializerRegistrationTests: XCTestCase {
     }
 
     func testResolveResolvable3() throws {
-        container.configure(defaults: .createNewInstancePerResolve) { context in
+        let container = DependencyContainer(defaults: .createNewInstancePerResolve) { context in
+            registerDefaultTypes(context)
             context.register(Resolvable3.init)
         }
 
@@ -52,7 +50,8 @@ final class InitializerRegistrationTests: XCTestCase {
     }
 
     func testResolveResolvable4() throws {
-        container.configure(defaults: .createNewInstancePerResolve) { context in
+        let container = DependencyContainer(defaults: .createNewInstancePerResolve) { context in
+            registerDefaultTypes(context)
             context.register(Resolvable4.init)
         }
 
@@ -60,7 +59,8 @@ final class InitializerRegistrationTests: XCTestCase {
     }
 
     func testResolveResolvable5() throws {
-        container.configure(defaults: .createNewInstancePerResolve) { context in
+        let container = DependencyContainer(defaults: .createNewInstancePerResolve) { context in
+            registerDefaultTypes(context)
             context.register(Resolvable5.init)
         }
 
@@ -68,7 +68,8 @@ final class InitializerRegistrationTests: XCTestCase {
     }
 
     func testResolveResolvable6() throws {
-        container.configure(defaults: .createNewInstancePerResolve) { context in
+        let container = DependencyContainer(defaults: .createNewInstancePerResolve) { context in
+            registerDefaultTypes(context)
             context.register(Resolvable6.init)
         }
 
@@ -76,7 +77,8 @@ final class InitializerRegistrationTests: XCTestCase {
     }
 
     func testResolveResolvable7() throws {
-        container.configure(defaults: .createNewInstancePerResolve) { context in
+        let container = DependencyContainer(defaults: .createNewInstancePerResolve) { context in
+            registerDefaultTypes(context)
             context.register(Resolvable7.init)
         }
 

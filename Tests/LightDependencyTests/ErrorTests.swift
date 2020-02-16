@@ -2,13 +2,9 @@ import XCTest
 import LightDependency
 
 final class ErrorTests: XCTestCase {
-    var container: DependencyContainer!
-
-    override func setUp() {
-        container = DependencyContainer()
-    }
 
     func testShouldThrowDependencyNotRegisteredError() {
+        let container = DependencyContainer { _ in }
         XCTAssertThrowsError(try container.resolve(file: "testFile", line: 33) as Int) { error in
             XCTAssertTrue(error is DependencyResolutionError)
             let error = error as! DependencyResolutionError
@@ -19,7 +15,7 @@ final class ErrorTests: XCTestCase {
     }
 
     func testShouldThrowRecursiveDependencyFoundError() {
-        container.configure(defaults: .createNewInstancePerResolve) { context in
+        let container = DependencyContainer(defaults: .createNewInstancePerResolve) { context in
             context.register(ClassA.init)
             context.register(ClassB.init)
             context.register(ClassC.init)
@@ -33,6 +29,7 @@ final class ErrorTests: XCTestCase {
     }
 
     func testShouldThrowUsingScopedContainerForRegistrationFromChildContainerError() throws {
+        let container = DependencyContainer { _ in }
         let parentContainer = container.createChildContainer(name: "parent", scopes: ["parent-scope"])
 
         let childContainer = parentContainer.createChildContainer(name: "child") { context in
@@ -49,7 +46,7 @@ final class ErrorTests: XCTestCase {
     }
 
     func testShouldThrowScopeWasNotFoundUpToHierarchyError() throws {
-        container.configure(defaults: .createNewInstancePerScope("my-scope")) { context in
+        let container = DependencyContainer(defaults: .createNewInstancePerScope("my-scope")) { context in
             context.register { "dependency" }
         }
 
@@ -63,7 +60,7 @@ final class ErrorTests: XCTestCase {
     }
 
     func testShouldThrowTryingToResolveSingleDependencyWhenMultipleAreRegisteredError() throws {
-        container.configure(defaults: .createNewInstancePerResolve) { context in
+        let container = DependencyContainer(defaults: .createNewInstancePerResolve) { context in
             context.register { "dependency 1" }
             context.register { "dependency 2" }
         }
@@ -76,7 +73,7 @@ final class ErrorTests: XCTestCase {
     }
 
     func testShouldNotThrowTryingToResolveSingleDependencyWhenMultipleAreRegisteredErrorWhenDependencyIsNamed() {
-        container.configure(defaults: .createNewInstancePerResolve) { context in
+        let container = DependencyContainer(defaults: .createNewInstancePerResolve) { context in
             context.register { "dependency 1" }
             context.register { "dependency 2" }.withName("name")
         }
@@ -86,7 +83,7 @@ final class ErrorTests: XCTestCase {
     }
 
     func testShouldThrowIfSingletonInstanceFromParentDependsOnInstanceFromChildContainer() throws {
-        container.configure(defaults: .registerSingletons) { context in
+        let container = DependencyContainer(defaults: .registerSingletons) { context in
             context.register(LogService.init)
         }
 
@@ -105,7 +102,7 @@ final class ErrorTests: XCTestCase {
     }
 
     func testShouldNotThrowIfPerContainerInstanceFromParentDependsOnInstanceFromChildContainer() throws {
-        container.configure(defaults: .createNewInstancePerContainer) { context in
+        let container = DependencyContainer(defaults: .createNewInstancePerContainer) { context in
             context.register(LogService.init)
         }
 
@@ -120,7 +117,7 @@ final class ErrorTests: XCTestCase {
     }
 
     func testShouldNotThrowIfPerResolveInstanceFromParentDependsOnInstanceFromChildContainer() throws {
-        container.configure(defaults: .createNewInstancePerResolve) { context in
+        let container = DependencyContainer(defaults: .createNewInstancePerResolve) { context in
             context.register(LogService.init)
         }
 
@@ -135,7 +132,7 @@ final class ErrorTests: XCTestCase {
     }
 
     func testShouldThrowIfScopedInstanceFromParentDependsOnInstanceFromChildContainer() throws {
-        container.configure(defaults: .createNewInstancePerScope("scope")) { context in
+        let container = DependencyContainer(defaults: .createNewInstancePerScope("scope")) { context in
             context.register(LogService.init)
         }
 

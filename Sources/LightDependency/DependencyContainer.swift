@@ -8,48 +8,42 @@ public final class DependencyContainer {
     public let id: String
     let parent: DependencyContainer?
     let instanceStore = ContainerInstanceStore()
-    let registrationStore = ContainerRegistrationStore()
+    let registrationStorage: ContainerRegistrationStorage
     let scopes: Set<String>
-    private var lock = os_unfair_lock()
 
     private init(
         id: String,
         parent: DependencyContainer?,
-        name: String? = nil,
-        scopes: Set<String> = [],
-        performRegistration: (ConfigurationContext) -> Void = { _ in }
+        name: String?,
+        scopes: Set<String>,
+        defaults: RegistrationDefaults,
+        performRegistration: (ConfigurationContext) -> Void
     ) {
         self.parent = parent
         self.name = name
         self.scopes = scopes
         self.id = id
 
+        let context = ConfigurationContext(defaults: defaults)
+        performRegistration(context)
+        let registrationStorageBuilder = ContainerRegistrationStorageBuilder()
+
         if parent == nil {
-            registerCommonDependencies()
+            DependencyContainer.getCommonDependencies().apply(to: registrationStorageBuilder)
         }
 
-        let context = ConfigurationContext(defaults: .default)
-        performRegistration(context)
-        context.apply(to: self)
+        context.apply(to: registrationStorageBuilder)
+        registrationStorage = registrationStorageBuilder.registrationStorage
     }
 
     public convenience init(
-        name: String? = nil,
-        scopes: Set<String> = [],
+        defaults: RegistrationDefaults = .default,
         file: StaticString = #file,
         line: UInt = #line,
-        performRegistration: (ConfigurationContext) -> Void = { _ in }
+        performRegistration: (ConfigurationContext) -> Void
     ) {
         let id = generateID(resolutionDescription: "\(file):\(line)")
-        self.init(id: id, parent: nil, name: name, scopes: scopes, performRegistration: performRegistration)
-    }
-
-    public func configure(defaults: RegistrationDefaults, performRegistration: (ConfigurationContext) -> Void) {
-        let context = ConfigurationContext(defaults: defaults)
-        performRegistration(context)
-        os_unfair_lock_lock(&lock)
-        context.apply(to: self)
-        os_unfair_lock_unlock(&lock)
+        self.init(id: id, parent: nil, name: "root", scopes: [], defaults: defaults, performRegistration: performRegistration)
     }
 
     public func resolve<Dependency>(_ useResolver: (Resolver) throws -> Dependency) rethrows -> Dependency {
@@ -78,21 +72,7 @@ extension DependencyContainer {
         performRegistration: (ConfigurationContext) -> Void = { _ in }
     ) -> DependencyContainer {
         let id = generateID(resolutionDescription: "\(file):\(line)")
-        return DependencyContainer(id: id, parent: self, name: name, scopes: scopes, performRegistration: performRegistration)
-    }
-}
-
-extension DependencyContainer: RegistrationStorage {
-    func add<Instance, Dependency>(_ registration: Registration<Instance, Dependency>, debugInfo: DebugInfo) {
-        let dependencyRegistration = SynchronizedDependencyRegistration(
-            registration: registration, debugInfo: debugInfo, name: registration.name)
-
-        let dependencyRegistrationForOptional = TransformedDependencyRegistration(
-            original: dependencyRegistration,
-            transform: { $0 as Optional<Dependency> })
-
-        registrationStore.add(AnyDependencyRegistration(dependencyRegistration), withName: registration.name)
-        registrationStore.add(AnyDependencyRegistration(dependencyRegistrationForOptional), withName: registration.name)
+        return DependencyContainer(id: id, parent: self, name: name, scopes: scopes, defaults: .default, performRegistration: performRegistration)
     }
 }
 
@@ -103,18 +83,8 @@ extension DependencyContainer {
 }
 
 extension DependencyContainer {
-    private func registerCommonDependencies() {
+    private static func getCommonDependencies() -> ConfigurationContext {
         let context = ConfigurationContext(defaults: .createNewInstancePerResolve)
-        defer { context.apply(to: self) }
-
-        context.registerWithResolver { resolver -> DependencyContainer in
-            let internalResolver = resolver as! Resolver
-            let resolvingContainer = internalResolver.resolvingContainer
-            let id = generateID(resolutionDescription: internalResolver.resolvingStack.stack.last?.description ?? "")
-            let childContainer = DependencyContainer(id: id, parent: resolvingContainer)
-            return childContainer
-        }
-        .asDependency(ofType: { $0 as DependencyContainer })
 
         context.registerWithResolver { resolver -> DependencyContainer in
             let internalResolver = resolver as! Resolver
@@ -123,6 +93,10 @@ extension DependencyContainer {
         }
         .asDependency(ofType: { $0 as DependencyContainer })
         .withName(DependencyContainer.resolvingContainerName)
+
+        return context
+    }
+}
     }
 }
 

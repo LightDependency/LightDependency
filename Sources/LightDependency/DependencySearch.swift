@@ -5,7 +5,7 @@ func findDependencyRegistrations<Dependency>(
     -> [RegistrationInfo<Dependency>] {
         for container in resolvingContainer.hierarchy {
             let registrations: [AnyDependencyRegistration<Dependency>]
-                = container.registrationStore.getRegistrations(withName: name)
+                = container.registrationStorage.getRegistrations(withName: name)
 
             guard !registrations.isEmpty else { continue }
 
@@ -27,7 +27,7 @@ func findAllRegistrations<Dependency>(
         case .containerHierarchy:
             var result: [RegistrationInfo<Dependency>] = []
             for container in resolvingContainer.hierarchy {
-                for (name, info) in container.registrationStore.getAllRegistrations(for: Dependency.self) {
+                for (name, info) in container.registrationStorage.getAllRegistrations(for: Dependency.self) {
                     result.append(RegistrationInfo(registration: info, name: name, owner: container))
                 }
             }
@@ -36,7 +36,7 @@ func findAllRegistrations<Dependency>(
 
         case .nearestContainer:
             for container in resolvingContainer.hierarchy {
-                let registrations = container.registrationStore.getAllRegistrations(for: Dependency.self)
+                let registrations = container.registrationStorage.getAllRegistrations(for: Dependency.self)
 
                 guard !registrations.isEmpty else { continue }
 

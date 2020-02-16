@@ -2,15 +2,10 @@ import XCTest
 import LightDependency
 
 final class LifestyleTests: XCTestCase {
-    var container: DependencyContainer!
-
-    override func setUp() {
-        container = DependencyContainer()
-    }
 
     func testSingleton() throws {
         var factoryCalled = 0
-        container.configure(defaults: .registerSingletons) { context in
+        let container = DependencyContainer(defaults: .registerSingletons) { context in
             context.register { _ -> Type1 in
                 factoryCalled += 1
                 return Type1("singleton")
@@ -26,7 +21,7 @@ final class LifestyleTests: XCTestCase {
 
     func testPerResolve() throws {
         var factoryCalled = 0
-        container.configure(defaults: .createNewInstancePerResolve) { context in
+        let container = DependencyContainer(defaults: .createNewInstancePerResolve) { context in
             context.register { _ -> Type1 in
                 factoryCalled += 1
                 return Type1("perResolve")
@@ -42,7 +37,7 @@ final class LifestyleTests: XCTestCase {
 
     func testPerContainer() throws {
         var factoryCalled = 0
-        container.configure(defaults: .createNewInstancePerContainer) { context in
+        let container = DependencyContainer(defaults: .createNewInstancePerContainer) { context in
             context.register { _ -> Type1 in
                 factoryCalled += 1
                 return Type1("perContainer")
@@ -66,7 +61,7 @@ final class LifestyleTests: XCTestCase {
 
     func testNamedScope() throws {
         var factoryCalled = 0
-        container.configure(defaults: .createNewInstancePerScope("myScope")) { context in
+        let container = DependencyContainer(defaults: .createNewInstancePerScope("myScope")) { context in
             context.register { _ -> Type1 in
                 factoryCalled += 1
                 return Type1("namedScope")
