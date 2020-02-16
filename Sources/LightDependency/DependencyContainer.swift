@@ -2,8 +2,6 @@ import Foundation
 
 public final class DependencyContainer {
 
-    static let resolvingContainerName = "RESOLVING_CONTAINER_NAME"
-
     public let name: String?
     public let id: String
     let parent: DependencyContainer?
@@ -27,10 +25,6 @@ public final class DependencyContainer {
         let context = ConfigurationContext(defaultLifestyle: defaultLifestyle)
         performRegistration(context)
         let registrationStorageBuilder = ContainerRegistrationStorageBuilder()
-
-        if parent == nil {
-            DependencyContainer.getCommonDependencies().apply(to: registrationStorageBuilder)
-        }
 
         context.apply(to: registrationStorageBuilder)
         registrationStorage = registrationStorageBuilder.registrationStorage
@@ -91,22 +85,6 @@ extension DependencyContainer {
 extension DependencyContainer {
     var hierarchy: UnfoldSequence<DependencyContainer, (DependencyContainer?, Bool)> {
         return sequence(first: self, next: { $0.parent })
-    }
-}
-
-extension DependencyContainer {
-    private static func getCommonDependencies() -> ConfigurationContext {
-        let context = ConfigurationContext(defaultLifestyle: .transient)
-
-        context.registerWithResolver { resolver -> DependencyContainer in
-            let internalResolver = resolver as! Resolver
-            let resolvingContainer = internalResolver.resolvingContainer
-            return resolvingContainer
-        }
-        .asDependency(ofType: { $0 as DependencyContainer })
-        .withName(DependencyContainer.resolvingContainerName)
-
-        return context
     }
 }
 
