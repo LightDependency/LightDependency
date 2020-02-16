@@ -14,13 +14,16 @@ public final class RegistrationConfig<Instance> {
 
     private let factory: (ResolverType) throws -> Instance
     private var configSettings: ConfigSettings = ConfigSettings()
-    private let defaults: RegistrationDefaults
+    private let defaultLifestyle: InstanceLifestyle
     private var addRegisterationActions: [AddRegistrationAction] = []
     private let debugInfo: DebugInfo
 
-    init(factory: @escaping (ResolverType) throws -> Instance, defaults: RegistrationDefaults, debugInfo: DebugInfo) {
+    init(factory: @escaping (ResolverType) throws -> Instance,
+         defaultLifestyle: InstanceLifestyle,
+         debugInfo: DebugInfo
+    ) {
         self.factory = factory
-        self.defaults = defaults
+        self.defaultLifestyle = defaultLifestyle
         self.debugInfo = debugInfo
     }
 
@@ -42,8 +45,8 @@ public final class RegistrationConfig<Instance> {
         line: UInt = #line,
         ofType casting: @escaping (Instance) -> Dependency)
         -> RegistrationConfig<Instance> {
-            let addRegistration = { [factory, defaults] (args: AddRegistrationActionArgs) in
-                let lifestyle = args.config.lifestyle ?? defaults.instanceLifestyle
+            let addRegistration = { [factory, defaultLifestyle] (args: AddRegistrationActionArgs) in
+                let lifestyle = args.config.lifestyle ?? defaultLifestyle
 
                 let registration = Registration<Instance, Dependency>(
                     name: args.config.name, lifestyle: lifestyle, factory: factory, casting: casting, lock: args.lock)
@@ -63,8 +66,8 @@ public final class RegistrationConfig<Instance> {
         line: UInt = #line,
         ofType casting: @escaping (Instance) -> Dependency)
         -> RegistrationConfig<Instance> {
-            let addRegistration = { [factory, defaults] (args: AddRegistrationActionArgs) in
-                let lifestyle = args.config.lifestyle ?? defaults.instanceLifestyle
+            let addRegistration = { [factory, defaultLifestyle] (args: AddRegistrationActionArgs) in
+                let lifestyle = args.config.lifestyle ?? defaultLifestyle
 
                 let registration = Registration<Instance, Dependency>(
                     name: name, lifestyle: lifestyle, factory: factory, casting: casting, lock: args.lock)
@@ -92,7 +95,7 @@ public final class RegistrationConfig<Instance> {
         } else {
             let registration = Registration<Instance, Instance>(
                 name: configSettings.name,
-                lifestyle: configSettings.lifestyle ?? defaults.instanceLifestyle,
+                lifestyle: configSettings.lifestyle ?? defaultLifestyle,
                 factory: factory)
 
             context.add(registration, debugInfo: debugInfo)
@@ -102,8 +105,8 @@ public final class RegistrationConfig<Instance> {
 
 extension RegistrationConfig {
     @discardableResult
-    public func perResolve() -> RegistrationConfig {
-        return withLifestyle(.perResolve)
+    public func asTransient() -> RegistrationConfig {
+        return withLifestyle(.transient)
     }
     
     @discardableResult
@@ -113,11 +116,11 @@ extension RegistrationConfig {
     
     @discardableResult
     public func perContainer() -> RegistrationConfig {
-        return withLifestyle(.perContainer)
+        return withLifestyle(.container)
     }
     
     @discardableResult
-    public func perScope(_ name: String) -> RegistrationConfig {
-        return withLifestyle(.namedScope(name))
+    public func asScoped(_ name: String) -> RegistrationConfig {
+        return withLifestyle(.scoped(name))
     }
 }

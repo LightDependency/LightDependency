@@ -14,7 +14,7 @@ final class InitializerRegistrationTests: XCTestCase {
     }
 
     func testResolveResolvable0() throws {
-        let container = DependencyContainer(defaults: .createNewInstancePerResolve) { context in
+        let container = DependencyContainer(defaultLifestyle: .transient) { context in
             registerDefaultTypes(context)
             context.register(Resolvable0.init)
         }
@@ -23,7 +23,7 @@ final class InitializerRegistrationTests: XCTestCase {
     }
 
     func testResolveResolvable1() throws {
-        let container = DependencyContainer(defaults: .createNewInstancePerResolve) { context in
+        let container = DependencyContainer(defaultLifestyle: .transient) { context in
             registerDefaultTypes(context)
             context.register(Resolvable1.init)
         }
@@ -32,7 +32,7 @@ final class InitializerRegistrationTests: XCTestCase {
     }
 
     func testResolveResolvable2() throws {
-        let container = DependencyContainer(defaults: .createNewInstancePerResolve) { context in
+        let container = DependencyContainer(defaultLifestyle: .transient) { context in
             registerDefaultTypes(context)
             context.register(Resolvable2.init)
         }
@@ -41,7 +41,7 @@ final class InitializerRegistrationTests: XCTestCase {
     }
 
     func testResolveResolvable3() throws {
-        let container = DependencyContainer(defaults: .createNewInstancePerResolve) { context in
+        let container = DependencyContainer(defaultLifestyle: .transient) { context in
             registerDefaultTypes(context)
             context.register(Resolvable3.init)
         }
@@ -50,7 +50,7 @@ final class InitializerRegistrationTests: XCTestCase {
     }
 
     func testResolveResolvable4() throws {
-        let container = DependencyContainer(defaults: .createNewInstancePerResolve) { context in
+        let container = DependencyContainer(defaultLifestyle: .transient) { context in
             registerDefaultTypes(context)
             context.register(Resolvable4.init)
         }
@@ -59,7 +59,7 @@ final class InitializerRegistrationTests: XCTestCase {
     }
 
     func testResolveResolvable5() throws {
-        let container = DependencyContainer(defaults: .createNewInstancePerResolve) { context in
+        let container = DependencyContainer(defaultLifestyle: .transient) { context in
             registerDefaultTypes(context)
             context.register(Resolvable5.init)
         }
@@ -68,7 +68,7 @@ final class InitializerRegistrationTests: XCTestCase {
     }
 
     func testResolveResolvable6() throws {
-        let container = DependencyContainer(defaults: .createNewInstancePerResolve) { context in
+        let container = DependencyContainer(defaultLifestyle: .transient) { context in
             registerDefaultTypes(context)
             context.register(Resolvable6.init)
         }
@@ -77,7 +77,7 @@ final class InitializerRegistrationTests: XCTestCase {
     }
 
     func testResolveResolvable7() throws {
-        let container = DependencyContainer(defaults: .createNewInstancePerResolve) { context in
+        let container = DependencyContainer(defaultLifestyle: .transient) { context in
             registerDefaultTypes(context)
             context.register(Resolvable7.init)
         }

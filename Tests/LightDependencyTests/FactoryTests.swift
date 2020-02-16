@@ -6,7 +6,7 @@ final class FactoryTests: XCTestCase {
     func testCreateNoThrowableFabricWithNoArguments() throws {
         typealias Factory = () -> String
 
-        let container = DependencyContainer(defaults: .createNewInstancePerResolve) { ctx in
+        let container = DependencyContainer(defaultLifestyle: .transient) { ctx in
             ctx.registerFactory(Factory.self)
             ctx.registerInstance("registered string")
         }
@@ -19,7 +19,7 @@ final class FactoryTests: XCTestCase {
     func testCreateThrowableFabricWithNoArguments() throws {
         typealias Factory = () throws -> String
 
-        let container = DependencyContainer(defaults: .createNewInstancePerResolve) { ctx in
+        let container = DependencyContainer(defaultLifestyle: .transient) { ctx in
             ctx.registerFactory(Factory.self)
             ctx.registerInstance("registered string")
         }
@@ -32,7 +32,7 @@ final class FactoryTests: XCTestCase {
     func testCreateNoThrowableFabricWithOneArgument() throws {
         typealias Factory = (Int) -> String
 
-        let container = DependencyContainer(defaults: .createNewInstancePerResolve) { ctx in
+        let container = DependencyContainer(defaultLifestyle: .transient) { ctx in
             ctx.registerFactory(Factory.self)
             ctx.registerWithResolver { resolver in try "parameter: \(resolver.resolve() as Int)" }
         }
@@ -46,7 +46,7 @@ final class FactoryTests: XCTestCase {
     func testCreateThrowableFabricWithOneArgument() throws {
         typealias Factory = (Int) throws -> String
 
-        let container = DependencyContainer(defaults: .createNewInstancePerResolve) { ctx in
+        let container = DependencyContainer(defaultLifestyle: .transient) { ctx in
             ctx.registerFactory(Factory.self)
             ctx.registerWithResolver { resolver in try "parameter: \(resolver.resolve() as Int)" }
         }
@@ -60,7 +60,7 @@ final class FactoryTests: XCTestCase {
     func testCreateNoThrowableFabricWithTwoArguments() throws {
         typealias Factory = (Type1, Type2) -> ResultType
 
-        let container = DependencyContainer(defaults: .createNewInstancePerResolve) { ctx in
+        let container = DependencyContainer(defaultLifestyle: .transient) { ctx in
             ctx.registerFactory(Factory.self)
             ctx.registerWithResolver { resolver in
                 try ResultType(resolver.resolve(), resolver.resolve())
@@ -75,7 +75,7 @@ final class FactoryTests: XCTestCase {
     func testCreateThrowableFabricWithTwoArguments() throws {
         typealias Factory = (Type1, Type2) throws -> ResultType
 
-        let container = DependencyContainer(defaults: .createNewInstancePerResolve) { ctx in
+        let container = DependencyContainer(defaultLifestyle: .transient) { ctx in
             ctx.registerFactory(Factory.self)
             ctx.registerWithResolver { resolver in
                 try ResultType(resolver.resolve(), resolver.resolve())
@@ -90,7 +90,7 @@ final class FactoryTests: XCTestCase {
     func testCreateNoThrowableFabricWithThreeArguments() throws {
         typealias Factory = (Type1, Type2, Type3) -> ResultType
 
-        let container = DependencyContainer(defaults: .createNewInstancePerResolve) { ctx in
+        let container = DependencyContainer(defaultLifestyle: .transient) { ctx in
             ctx.registerFactory(Factory.self)
             ctx.registerWithResolver { resolver in
                 try ResultType(resolver.resolve(), resolver.resolve(), resolver.resolve())
@@ -105,7 +105,7 @@ final class FactoryTests: XCTestCase {
     func testCreateThrowableFabricWithThreeArguments() throws {
         typealias Factory = (Type1, Type2, Type3) throws -> ResultType
 
-        let container = DependencyContainer(defaults: .createNewInstancePerResolve) { ctx in
+        let container = DependencyContainer(defaultLifestyle: .transient) { ctx in
             ctx.registerFactory(Factory.self)
             ctx.registerWithResolver { resolver in
                 try ResultType(resolver.resolve(), resolver.resolve(), resolver.resolve())
@@ -120,7 +120,7 @@ final class FactoryTests: XCTestCase {
     func testCreateNoThrowableFabricWithFourArguments() throws {
         typealias Factory = (Type1, Type2, Type3, Type4) -> ResultType
 
-        let container = DependencyContainer(defaults: .createNewInstancePerResolve) { ctx in
+        let container = DependencyContainer(defaultLifestyle: .transient) { ctx in
             ctx.registerFactory(Factory.self)
             ctx.registerWithResolver { resolver in
                 try ResultType(resolver.resolve(), resolver.resolve(), resolver.resolve(),
@@ -136,7 +136,7 @@ final class FactoryTests: XCTestCase {
     func testCreateThrowableFabricWithFourArguments() throws {
         typealias Factory = (Type1, Type2, Type3, Type4) throws -> ResultType
 
-        let container = DependencyContainer(defaults: .createNewInstancePerResolve) { ctx in
+        let container = DependencyContainer(defaultLifestyle: .transient) { ctx in
             ctx.registerFactory(Factory.self)
             ctx.registerWithResolver { resolver in
                 try ResultType(resolver.resolve(), resolver.resolve(), resolver.resolve(),
@@ -152,7 +152,7 @@ final class FactoryTests: XCTestCase {
     func testCreateNoThrowableFabricWithFiveArguments() throws {
         typealias Factory = (Type1, Type2, Type3, Type4, Type5) -> ResultType
 
-        let container = DependencyContainer(defaults: .createNewInstancePerResolve) { ctx in
+        let container = DependencyContainer(defaultLifestyle: .transient) { ctx in
             ctx.registerFactory(Factory.self)
             ctx.registerWithResolver { resolver in
                 try ResultType(resolver.resolve(), resolver.resolve(), resolver.resolve(),
@@ -168,7 +168,7 @@ final class FactoryTests: XCTestCase {
     func testCreateThrowableFabricWithFiveArguments() throws {
         typealias Factory = (Type1, Type2, Type3, Type4, Type5) throws -> ResultType
 
-        let container = DependencyContainer(defaults: .createNewInstancePerResolve) { ctx in
+        let container = DependencyContainer(defaultLifestyle: .transient) { ctx in
             ctx.registerFactory(Factory.self)
             ctx.registerWithResolver { resolver in
                 try ResultType(resolver.resolve(), resolver.resolve(), resolver.resolve(),
@@ -184,7 +184,7 @@ final class FactoryTests: XCTestCase {
     func testCreateNoThrowableFabricWithSixArguments() throws {
         typealias Factory = (Type1, Type2, Type3, Type4, Type5, Type6) -> ResultType
 
-        let container = DependencyContainer(defaults: .createNewInstancePerResolve) { ctx in
+        let container = DependencyContainer(defaultLifestyle: .transient) { ctx in
             ctx.registerFactory(Factory.self)
             ctx.registerWithResolver { resolver in
                 try ResultType(resolver.resolve(), resolver.resolve(), resolver.resolve(),
@@ -200,7 +200,7 @@ final class FactoryTests: XCTestCase {
     func testCreateThrowableFabricWithSixArguments() throws {
         typealias Factory = (Type1, Type2, Type3, Type4, Type5, Type6) throws -> ResultType
 
-        let container = DependencyContainer(defaults: .createNewInstancePerResolve) { ctx in
+        let container = DependencyContainer(defaultLifestyle: .transient) { ctx in
             ctx.registerFactory(Factory.self)
             ctx.registerWithResolver { resolver in
                 try ResultType(resolver.resolve(), resolver.resolve(), resolver.resolve(),
@@ -216,7 +216,7 @@ final class FactoryTests: XCTestCase {
     func testCreateNoThrowableFabricWithSevenArguments() throws {
         typealias Factory = (Type1, Type2, Type3, Type4, Type5, Type6, Type7) -> ResultType
 
-        let container = DependencyContainer(defaults: .createNewInstancePerResolve) { ctx in
+        let container = DependencyContainer(defaultLifestyle: .transient) { ctx in
             ctx.registerFactory(Factory.self)
             ctx.registerWithResolver { resolver in
                 try ResultType(resolver.resolve(), resolver.resolve(), resolver.resolve(),
@@ -233,7 +233,7 @@ final class FactoryTests: XCTestCase {
     func testCreateThrowableFabricWithSevenArguments() throws {
         typealias Factory = (Type1, Type2, Type3, Type4, Type5, Type6, Type7) throws -> ResultType
 
-        let container = DependencyContainer(defaults: .createNewInstancePerResolve) { ctx in
+        let container = DependencyContainer(defaultLifestyle: .transient) { ctx in
             ctx.registerFactory(Factory.self)
             ctx.registerWithResolver { resolver in
                 try ResultType(resolver.resolve(), resolver.resolve(), resolver.resolve(),
@@ -250,7 +250,7 @@ final class FactoryTests: XCTestCase {
     func testPropogateErrorWithNoArguments() throws {
         typealias Factory = () throws -> String
 
-        let container = DependencyContainer(defaults: .createNewInstancePerResolve) { ctx in
+        let container = DependencyContainer(defaultLifestyle: .transient) { ctx in
             ctx.registerFactory(Factory.self)
             ctx.register { _ throws -> String in throw UserError() }
         }
@@ -264,7 +264,7 @@ final class FactoryTests: XCTestCase {
     func testPropogateErrorWithOneArgument() throws {
         typealias Factory = (Int) throws -> String
 
-        let container = DependencyContainer(defaults: .createNewInstancePerResolve) { ctx in
+        let container = DependencyContainer(defaultLifestyle: .transient) { ctx in
             ctx.registerFactory(Factory.self)
             ctx.register { _ throws -> String in throw UserError() }
         }
@@ -278,7 +278,7 @@ final class FactoryTests: XCTestCase {
     func testPropogateErrorWithTwoArguments() throws {
         typealias Factory = (Type1, Type2) throws -> ResultType
 
-        let container = DependencyContainer(defaults: .createNewInstancePerResolve) { ctx in
+        let container = DependencyContainer(defaultLifestyle: .transient) { ctx in
             ctx.registerFactory(Factory.self)
             ctx.register { _ throws -> ResultType in throw UserError() }
         }
@@ -292,7 +292,7 @@ final class FactoryTests: XCTestCase {
     func testPropogateErrorWithThreeArguments() throws {
         typealias Factory = (Type1, Type2, Type3) throws -> ResultType
 
-        let container = DependencyContainer(defaults: .createNewInstancePerResolve) { ctx in
+        let container = DependencyContainer(defaultLifestyle: .transient) { ctx in
             ctx.registerFactory(Factory.self)
             ctx.register { _ throws -> ResultType in throw UserError() }
         }
@@ -306,7 +306,7 @@ final class FactoryTests: XCTestCase {
     func testPropogateErrorWithFourArguments() throws {
         typealias Factory = (Type1, Type2, Type3, Type4) throws -> ResultType
 
-        let container = DependencyContainer(defaults: .createNewInstancePerResolve) { ctx in
+        let container = DependencyContainer(defaultLifestyle: .transient) { ctx in
             ctx.registerFactory(Factory.self)
             ctx.register { _ throws -> ResultType in throw UserError() }
         }
@@ -320,7 +320,7 @@ final class FactoryTests: XCTestCase {
     func testPropogateErrorWithFiveArguments() throws {
         typealias Factory = (Type1, Type2, Type3, Type4, Type5) throws -> ResultType
 
-        let container = DependencyContainer(defaults: .createNewInstancePerResolve) { ctx in
+        let container = DependencyContainer(defaultLifestyle: .transient) { ctx in
             ctx.registerFactory(Factory.self)
             ctx.register { _ throws -> ResultType in throw UserError() }
         }
@@ -334,7 +334,7 @@ final class FactoryTests: XCTestCase {
     func testPropogateErrorWithSixArguments() throws {
         typealias Factory = (Type1, Type2, Type3, Type4, Type5, Type6) throws -> ResultType
 
-        let container = DependencyContainer(defaults: .createNewInstancePerResolve) { ctx in
+        let container = DependencyContainer(defaultLifestyle: .transient) { ctx in
             ctx.registerFactory(Factory.self)
             ctx.register { _ throws -> ResultType in throw UserError() }
         }
@@ -348,7 +348,7 @@ final class FactoryTests: XCTestCase {
     func testPropogateErrorWithSevenArguments() throws {
         typealias Factory = (Type1, Type2, Type3, Type4, Type5, Type6, Type7) throws -> ResultType
 
-        let container = DependencyContainer(defaults: .createNewInstancePerResolve) { ctx in
+        let container = DependencyContainer(defaultLifestyle: .transient) { ctx in
             ctx.registerFactory(Factory.self)
             ctx.register { _ throws -> ResultType in throw UserError() }
         }

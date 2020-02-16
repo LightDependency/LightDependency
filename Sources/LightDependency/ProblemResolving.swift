@@ -3,7 +3,7 @@ func createHelpInfoForForbiddenResolving<Dependency>(from info: DebugRegistratio
     let message = "Can't resolve \(stackItem.dependencyKey) because registration requires saving an instance "
         + "but has the dependency contained in the child container  - \(DependencyKey(Dependency.self, info.name)). "
         + "Saving instances, those created using dependencies from child container is not allowed. "
-        + "Consider to use \(InstanceLifestyle.self) = \(InstanceLifestyle.perResolve) or \(InstanceLifestyle.perContainer) on registration \(stackItem.dependencyKey)"
+        + "Consider to use \(InstanceLifestyle.self) = \(InstanceLifestyle.transient) or \(InstanceLifestyle.container) on registration \(stackItem.dependencyKey)"
 
     return message
 }

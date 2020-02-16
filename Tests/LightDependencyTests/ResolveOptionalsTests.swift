@@ -3,7 +3,7 @@ import LightDependency
 
 final class ResolveOptionalsTests: XCTestCase {
     func testOptionalShouldBeResolved() throws {
-        let container = DependencyContainer(defaults: .createNewInstancePerResolve) { container in
+        let container = DependencyContainer(defaultLifestyle: .transient) { container in
             container.register { "dependency" }
         }
 

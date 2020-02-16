@@ -1,8 +1,8 @@
 public enum InstanceLifestyle {
-    case perResolve
-    case perContainer
+    case transient
+    case container
     case singleton
-    case namedScope(String)
+    case scoped(String)
 }
 
 struct SelectContainerContext {
@@ -17,16 +17,16 @@ struct SelectContainerContext {
 extension InstanceLifestyle {
     func selectContainer(_ context: SelectContainerContext) throws -> DependencyContainer? {
         switch self {
-        case .perResolve:
+        case .transient:
             return nil
 
-        case .perContainer:
+        case .container:
             return context.resolvingContainer
 
         case .singleton:
             return context.registrationOwnerContainer
 
-        case .namedScope(let scopeName):
+        case .scoped(let scopeName):
             var storingIsForbidden = false
             var resultContainer: DependencyContainer?
 

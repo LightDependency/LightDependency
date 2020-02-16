@@ -3,11 +3,11 @@ protocol RegistrationStorage {
 }
 
 public final class ConfigurationContext {
-    let defaults: RegistrationDefaults
+    let defaultLifestyle: InstanceLifestyle
     private var registrationActions: [(RegistrationStorage) -> Void] = []
 
-    init(defaults: RegistrationDefaults) {
-        self.defaults = defaults
+    init(defaultLifestyle: InstanceLifestyle) {
+        self.defaultLifestyle = defaultLifestyle
     }
 
     @discardableResult
@@ -19,7 +19,7 @@ public final class ConfigurationContext {
 
         let config = RegistrationConfig(
             factory: factory,
-            defaults: defaults,
+            defaultLifestyle: defaultLifestyle,
             debugInfo: DebugInfo(file: file, line: line)
         )
 
@@ -45,8 +45,8 @@ extension ConfigurationContext: RegistrationStorage {
 }
 
 extension ConfigurationContext {
-    public func with(defaults: RegistrationDefaults, _ performRegistration: (ConfigurationContext) -> Void) {
-        let context = ConfigurationContext(defaults: defaults)
+    public func with(lifestyle: InstanceLifestyle, _ performRegistration: (ConfigurationContext) -> Void) {
+        let context = ConfigurationContext(defaultLifestyle: lifestyle)
         performRegistration(context)
         context.apply(to: self)
     }
@@ -55,6 +55,6 @@ extension ConfigurationContext {
 extension ConfigurationContext {
     @discardableResult
     public func registerInstance<Instance>(_ instance: Instance) -> RegistrationConfig<Instance> {
-        return register({ _ in instance }).perResolve()
+        return register({ _ in instance }).asTransient()
     }
 }

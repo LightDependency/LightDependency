@@ -339,13 +339,13 @@ extension ConfigurationContext {
 
 extension ConfigurationContext {
     private func addRegistration<T>(_ debugInfo: DebugInfo, _ factory: @escaping (Resolver) throws -> T) {
-        add(Registration(lifestyle: .perResolve, factory: factory), debugInfo: debugInfo)
+        add(Registration(lifestyle: .transient, factory: factory), debugInfo: debugInfo)
     }
 }
 
 extension ConfigurationContext {
     fileprivate func addInstance<T>(_ value: T, initiatedFrom: DebugInfo, file: StaticString = #file, line: UInt = #line) {
         let debugInfo = DebugInfo(file: file, line: line, initiatedFrom: initiatedFrom)
-        add(Registration(lifestyle: .perResolve, factory: { _ in value }), debugInfo: debugInfo)
+        add(Registration(lifestyle: .transient, factory: { _ in value }), debugInfo: debugInfo)
     }
 }

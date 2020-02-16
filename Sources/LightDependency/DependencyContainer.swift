@@ -16,7 +16,7 @@ public final class DependencyContainer {
         parent: DependencyContainer?,
         name: String?,
         scopes: Set<String>,
-        defaults: RegistrationDefaults,
+        defaultLifestyle: InstanceLifestyle,
         performRegistration: (ConfigurationContext) -> Void
     ) {
         self.parent = parent
@@ -24,7 +24,7 @@ public final class DependencyContainer {
         self.scopes = scopes
         self.id = id
 
-        let context = ConfigurationContext(defaults: defaults)
+        let context = ConfigurationContext(defaultLifestyle: defaultLifestyle)
         performRegistration(context)
         let registrationStorageBuilder = ContainerRegistrationStorageBuilder()
 
@@ -37,13 +37,19 @@ public final class DependencyContainer {
     }
 
     public convenience init(
-        defaults: RegistrationDefaults = .default,
+        defaultLifestyle: InstanceLifestyle = .transient,
         file: StaticString = #file,
         line: UInt = #line,
         performRegistration: (ConfigurationContext) -> Void
     ) {
-        let id = generateID(resolutionDescription: "\(file):\(line)")
-        self.init(id: id, parent: nil, name: "root", scopes: [], defaults: defaults, performRegistration: performRegistration)
+        self.init(
+            id: generateID(resolutionDescription: "\(file):\(line)"),
+            parent: nil,
+            name: "root",
+            scopes: [],
+            defaultLifestyle: defaultLifestyle,
+            performRegistration: performRegistration
+        )
     }
 
     public func resolve<Dependency>(_ useResolver: (Resolver) throws -> Dependency) rethrows -> Dependency {
@@ -71,8 +77,14 @@ extension DependencyContainer {
         line: UInt = #line,
         performRegistration: (ConfigurationContext) -> Void = { _ in }
     ) -> DependencyContainer {
-        let id = generateID(resolutionDescription: "\(file):\(line)")
-        return DependencyContainer(id: id, parent: self, name: name, scopes: scopes, defaults: .default, performRegistration: performRegistration)
+        DependencyContainer(
+            id: generateID(resolutionDescription: "\(file):\(line)"),
+            parent: self,
+            name: name,
+            scopes: scopes,
+            defaultLifestyle: .transient,
+            performRegistration: performRegistration
+        )
     }
 }
 
@@ -84,7 +96,7 @@ extension DependencyContainer {
 
 extension DependencyContainer {
     private static func getCommonDependencies() -> ConfigurationContext {
-        let context = ConfigurationContext(defaults: .createNewInstancePerResolve)
+        let context = ConfigurationContext(defaultLifestyle: .transient)
 
         context.registerWithResolver { resolver -> DependencyContainer in
             let internalResolver = resolver as! Resolver

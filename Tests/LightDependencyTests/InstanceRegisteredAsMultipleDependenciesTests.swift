@@ -6,7 +6,7 @@ final class InstanceRegisteredAsMultipleDependenciesTests: XCTestCase {
     func testSingletonInstanceShouldBeCreatedOnceForMultipleDependencies() throws {
         var factoryCallCounter = 0
 
-        let container = DependencyContainer(defaults: .registerSingletons) { context in
+        let container = DependencyContainer(defaultLifestyle: .singleton) { context in
             context
                 .register { () -> SuperService in
                     factoryCallCounter += 1
