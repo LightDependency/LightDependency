@@ -16,5 +16,5 @@ TODO: Add long description of the pod here.
   s.osx.deployment_target = '10.12'
 
   s.source_files = 'Sources/LightDependency/**/*.swift'
-  s.swift_version = '4.2'
+  s.swift_version = '5.1'
 end
