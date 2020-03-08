@@ -50,67 +50,64 @@ func findAllRegistrations<Dependency>(
 }
 
 func resolveRecursive<Dependency>(
-    stack: ResolvingStack,
     registrationInfo: RegistrationInfo<Dependency>,
     resolvingContainer: DependencyContainer,
-    file: StaticString,
-    line: UInt) throws
-    -> Dependency {
-        let registration = registrationInfo.registration
-        let owner = registrationInfo.owner
+    queue: ResolutionQueue,
+    resolutionPlace: DebugInfo
+) throws -> Dependency {
+
+    try Diagnostics.validateResolutionQueue(queue.info, resolutionPlace)
+
+    let registration = registrationInfo.registration
+    let owner = registrationInfo.owner
+
+    let selectContainerArgs = SelectContainerContext(
+        resolvingContainer: resolvingContainer,
+        registrationOwnerContainer: owner,
+        queueInfo: queue.info,
+        dependencyKey: registrationInfo.key,
+        resolutionPlace: resolutionPlace)
+
+    let instanceOwnerContainer = try registration.lifestyle.selectContainer(selectContainerArgs)
+
+    if let storage = instanceOwnerContainer?.instanceStorage,
+        let instance = registration.getFromStorage(storage) {
+        return instance
+    }
+
+    let childResolver = Resolver(
+        resolvingContainer: instanceOwnerContainer ?? resolvingContainer,
+        executionQueue: queue
+    )
+
+    let result = try _do({
+        try registration.createAndSaveIfNeeded(
+            resolver: childResolver,
+            storage: instanceOwnerContainer?.instanceStorage
+        )
+    }, finally: childResolver.dispose)
+
+    for action in result.setUpActions {
 
         let stackItem = ResolvingStackItem(
             dependencyKey: registrationInfo.key,
-            resolvingContainer: resolvingContainer,
-            ownerContainer: owner,
+            resolvingContainer: instanceOwnerContainer ?? resolvingContainer,
+            registrationOwnerContainer: registrationInfo.owner,
             registrationPlace: registrationInfo.registration.debugInfo,
-            resolutionPlace: DebugInfo(file: file, line: line))
+            resolutionPlace: resolutionPlace,
+            setUpPlace: action.debugInfo
+        )
 
-        let newStack = stack.adding(stackItem)
+        queue.async(item: stackItem) { queue in
+            let resolver = Resolver(
+                resolvingContainer: instanceOwnerContainer ?? resolvingContainer,
+                executionQueue: queue
+            )
 
-        guard hierarchyDoesNotContainCircularDependencies(stack: stack, currentStackItem: stackItem) else {
-            throw DependencyResolutionError(
-                errorType: .recursiveDependencyFound,
-                dependencyType: Dependency.self,
-                dependencyName: registrationInfo.name,
-                resolvingStack: newStack,
-                file: file,
-                line: line)
-        }
-
-        let selectContainerArgs = SelectContainerContext(
-            resolvingContainer: resolvingContainer,
-            registrationOwnerContainer: owner,
-            resolvingStack: newStack,
-            dependencyKey: registrationInfo.key,
-            file: file,
-            line: line)
-
-        let containerForInstanceStoring = try registration.lifestyle.selectContainer(selectContainerArgs)
-
-        if let instance: Dependency = containerForInstanceStoring?.instanceStorage
-            .getInstance(with: registrationInfo.name) {
-            return instance
-        }
-
-        switch containerForInstanceStoring {
-        case .some(let container):
-            let childResolver = Resolver(resolvingContainer: container, stack: newStack)
-            return try registration.createAndSave(resolver: childResolver, storage: container.instanceStorage)
-
-        case .none:
-            let childResolver = Resolver(resolvingContainer: resolvingContainer, stack: newStack)
-            return try registration.create(resolver: childResolver)
-        }
-}
-
-private func hierarchyDoesNotContainCircularDependencies(stack: ResolvingStack, currentStackItem: ResolvingStackItem) -> Bool {
-    for item in stack.stack {
-        if item.dependencyKey == currentStackItem.dependencyKey
-            && item.registrationOwnerContainer === currentStackItem.registrationOwnerContainer {
-            return false
+            defer { resolver.dispose() }
+            try action.setUp(resolver)
         }
     }
-    
-    return true
+
+    return result.dependency
 }

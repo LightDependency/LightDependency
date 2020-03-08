@@ -8,10 +8,9 @@ public enum InstanceLifestyle {
 struct SelectContainerContext {
     let resolvingContainer: DependencyContainer
     let registrationOwnerContainer: DependencyContainer
-    let resolvingStack: ResolvingStack
+    let queueInfo: ResolutionQueueInfo?
     let dependencyKey: DependencyKey
-    let file: StaticString
-    let line: UInt
+    let resolutionPlace: DebugInfo
 }
 
 extension InstanceLifestyle {
@@ -50,19 +49,19 @@ extension InstanceLifestyle {
                     errorType: .usingScopedContainerForRegistrationFromChildContainer,
                     dependencyType: context.dependencyKey.type,
                     dependencyName: context.dependencyKey.name,
-                    resolvingStack: context.resolvingStack,
-                    file: context.file,
-                    line: context.line)
+                    resolvingStack: ResolvingStack(queueInfo: context.queueInfo),
+                    file: context.resolutionPlace.file,
+                    line: context.resolutionPlace.line)
 
             default:
                 throw DependencyResolutionError(
                     errorType: .scopeWasNotFoundUpToHierarchy,
                     dependencyType: context.dependencyKey.type,
                     dependencyName: context.dependencyKey.name,
-                    resolvingStack: context.resolvingStack,
+                    resolvingStack: ResolvingStack(queueInfo: context.queueInfo),
                     additionalInfo: "scope name: \(scopeName)",
-                    file: context.file,
-                    line: context.line)
+                    file: context.resolutionPlace.file,
+                    line: context.resolutionPlace.line)
             }
         }
     }

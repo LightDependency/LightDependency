@@ -1,18 +1,26 @@
-public struct ResolvingStack: CustomStringConvertible {
+public final class ResolvingStack: CustomStringConvertible {
     public let stack: [ResolvingStackItem]
-    
+    public let parentStack: ResolvingStack?
+
     init() {
         stack = []
+        self.parentStack = nil
     }
-    
-    private init(stack: [ResolvingStackItem]) {
+
+    init(parentStack: ResolvingStack) {
+        stack = []
+        self.parentStack = parentStack
+    }
+
+    private init(stack: [ResolvingStackItem], parentStack: ResolvingStack?) {
         self.stack = stack
+        self.parentStack = parentStack
     }
-    
-    func adding(_ stackItem: ResolvingStackItem) -> ResolvingStack {
-        return ResolvingStack(stack: stack + [stackItem])
+
+    func appening(_ stackItem: ResolvingStackItem) -> ResolvingStack {
+        return ResolvingStack(stack: stack + [stackItem], parentStack: parentStack)
     }
-    
+
     public var description: String {
         return lines.joined(separator: "\n")
     }
@@ -34,23 +42,43 @@ public struct ResolvingStack: CustomStringConvertible {
     }
 }
 
+extension ResolvingStack {
+    convenience init(queueInfo: ResolutionQueueInfo?) {
+        guard let info = queueInfo else {
+            self.init()
+            return
+        }
+
+        let stackItems = sequence(first: info, next: { $0.parent }).reversed().map { $0.item }
+        let parentStack = info.enqueuedFromItem.map { ResolvingStack(queueInfo: $0) }
+
+        self.init(stack: stackItems, parentStack: parentStack)
+    }
+}
+
 public struct ResolvingStackItem: CustomStringConvertible {
+    public let dependencyKey: DependencyKey
     public let resolvingContainer: DependencyContainer
     public let registrationOwnerContainer: DependencyContainer
-    public let dependencyKey: DependencyKey
     public let registrationPlace: DebugInfo
     public let resolutionPlace: DebugInfo
+    public let setUpPlace: DebugInfo?
     
     init(dependencyKey: DependencyKey,
          resolvingContainer: DependencyContainer,
-         ownerContainer: DependencyContainer,
+         registrationOwnerContainer: DependencyContainer,
          registrationPlace: DebugInfo,
-         resolutionPlace: DebugInfo) {
-        self.resolvingContainer = resolvingContainer
-        self.registrationOwnerContainer = ownerContainer
+         resolutionPlace: DebugInfo,
+         setUpPlace: DebugInfo?
+    ) {
         self.dependencyKey = dependencyKey
+
+        self.resolvingContainer = resolvingContainer
+        self.registrationOwnerContainer = registrationOwnerContainer
+
         self.registrationPlace = registrationPlace
         self.resolutionPlace = resolutionPlace
+        self.setUpPlace = setUpPlace
     }
     
     public var description: String {

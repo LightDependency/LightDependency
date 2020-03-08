@@ -20,12 +20,28 @@ final class TransformedDependencyRegistration<Instance, OriginalDependency, Depe
         return original.debugInfo
     }
 
-    func create(resolver: Resolver) throws -> Dependency {
-        return try transform(original.create(resolver: resolver))
+    func create(resolver: Resolver) throws -> CreateDependencyResult<Dependency> {
+        let result = try original.create(resolver: resolver)
+
+        return CreateDependencyResult(
+            dependency: transform(result.dependency),
+            setUpActions: result.setUpActions
+        )
     }
 
-    func createAndSave(resolver: Resolver, storage: InstanceStorage) throws -> Dependency {
-        return try transform(original.createAndSave(resolver: resolver, storage: storage))
+    func createAndSave(resolver: Resolver, storage: InstanceStorage) throws -> CreateDependencyResult<Dependency> {
+        let result = try original.createAndSave(resolver: resolver, storage: storage)
+
+        return CreateDependencyResult(
+            dependency: transform(result.dependency),
+            setUpActions: result.setUpActions
+        )
+    }
+
+    func getFromStorage(_ storage: InstanceStorage) -> Dependency? {
+        let dependency = original.getFromStorage(storage)
+
+        return dependency.map(transform)
     }
 
     var primaryDependency: DependencyKey? {

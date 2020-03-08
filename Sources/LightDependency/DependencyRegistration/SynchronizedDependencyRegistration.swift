@@ -19,23 +19,41 @@ final class SynchronizedDependencyRegistration<Instance, Dependency>: Dependency
         return registration.lifestyle
     }
 
-    func create(resolver: Resolver) throws -> Dependency {
-        return try registration.casting(registration.factory(resolver))
+    func create(resolver: Resolver) throws -> CreateDependencyResult<Dependency> {
+        let instance = try registration.factory(resolver)
+        let dependency = registration.casting(instance)
+
+        let setUpActions = registration.setUpActions.map { action in action.carryingInstance(instance) }
+
+        return CreateDependencyResult(dependency: dependency, setUpActions: setUpActions)
     }
 
-    func createAndSave(resolver: Resolver, storage: InstanceStorage) throws -> Dependency {
+    func createAndSave(resolver: Resolver, storage: InstanceStorage) throws -> CreateDependencyResult<Dependency> {
         let lock = registration.lock ?? self.lock
 
         lock.lock()
-        defer { lock.unlock() }
 
         if let existingInstance: Instance = storage.getInstance(with: registration.name) {
-            return registration.casting(existingInstance)
+            lock.unlock()
+            let dependency = registration.casting(existingInstance)
+            return CreateDependencyResult(dependency: dependency, setUpActions: [])
         }
 
-        let instance = try registration.factory(resolver)
-        storage.save(instance: instance, name: registration.name)
-        return registration.casting(instance)
+        let instance: Instance = try _do({
+            let instance = try registration.factory(resolver)
+            storage.save(instance: instance, name: registration.name)
+            return instance
+        }, finally: lock.unlock)
+
+        let dependency = registration.casting(instance)
+
+        let setUpActions = registration.setUpActions.map { action in action.carryingInstance(instance) }
+
+        return CreateDependencyResult(dependency: dependency, setUpActions: setUpActions)
+    }
+
+    func getFromStorage(_ storage: InstanceStorage) -> Dependency? {
+        storage.getInstance(with: name)
     }
 
     var primaryDependency: DependencyKey? {

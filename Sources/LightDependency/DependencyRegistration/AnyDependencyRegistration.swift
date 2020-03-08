@@ -1,6 +1,7 @@
 final class AnyDependencyRegistration<Dependency>: DependencyRegistrationType, DependencyFactoryType {
-    private let _create: (Resolver) throws -> Dependency
-    private let _createAndSave: (Resolver, InstanceStorage) throws -> Dependency
+    private let _create: (Resolver) throws -> CreateDependencyResult<Dependency>
+    private let _createAndSave: (Resolver, InstanceStorage) throws -> CreateDependencyResult<Dependency>
+    private let _getFromStorage: (InstanceStorage) -> Dependency?
 
     let key: DependencyKey
     let lifestyle: InstanceLifestyle
@@ -15,13 +16,18 @@ final class AnyDependencyRegistration<Dependency>: DependencyRegistrationType, D
             self.debugInfo = registration.debugInfo
             self._create = registration.create
             self._createAndSave = registration.createAndSave
+            self._getFromStorage = registration.getFromStorage
     }
 
-    func create(resolver: Resolver) throws -> Dependency {
+    func create(resolver: Resolver) throws -> CreateDependencyResult<Dependency> {
         return try _create(resolver)
     }
 
-    func createAndSave(resolver: Resolver, storage: InstanceStorage) throws -> Dependency {
+    func createAndSave(resolver: Resolver, storage: InstanceStorage) throws -> CreateDependencyResult<Dependency> {
         return try _createAndSave(resolver, storage)
+    }
+
+    func getFromStorage(_ storage: InstanceStorage) -> Dependency? {
+        _getFromStorage(storage)
     }
 }
