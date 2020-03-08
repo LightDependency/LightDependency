@@ -2,27 +2,27 @@ public final class Resolver: ResolverType {
     private var disposed = false
     let resolvingContainer: DependencyContainer
     private let queue: ResolutionQueue
-    
+
     init(resolvingContainer: DependencyContainer) {
         self.resolvingContainer = resolvingContainer
         queue = ExecutionQueue()
     }
-    
+
     init(resolvingContainer: DependencyContainer, executionQueue: ResolutionQueue) {
         self.resolvingContainer = resolvingContainer
         self.queue = executionQueue
     }
-    
+
     public func resolve<Dependency>(file: StaticString, line: UInt) throws -> Dependency {
         guard !disposed else { resolverIsDisposedFatalError() }
         return try resolve(name: nil, file: file, line: line)
     }
-    
+
     public func resolve<Dependency>(byName name: String, file: StaticString, line: UInt) throws -> Dependency {
         guard !disposed else { resolverIsDisposedFatalError() }
         return try resolve(name: name, file: file, line: line)
     }
-    
+
     public func resolveAll<Dependency>(
         from target: ResolveMultipleInstancesSearchTarget,
         file: StaticString,
@@ -47,7 +47,7 @@ public final class Resolver: ResolverType {
         from target: ResolveMultipleInstancesSearchTarget,
         file: StaticString,
         line: UInt
-    ) throws -> [String : Dependency] {
+    ) throws -> [String: Dependency] {
         guard !disposed else { resolverIsDisposedFatalError() }
 
         let registrations = findAllRegistrations(for: Dependency.self, in: resolvingContainer, target: target)
@@ -63,7 +63,7 @@ public final class Resolver: ResolverType {
 
         return dict
     }
-    
+
     func dispose() {
         disposed = true
     }

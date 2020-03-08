@@ -33,7 +33,7 @@ struct Registration<Instance, Dependency> {
     let setUpActions: [SetUpAction<Instance>]
     let casting: (Instance) -> Dependency
     let lock: RegistrationLock?
-    
+
     init(name: String? = nil,
                 lifestyle: InstanceLifestyle,
                 factory: @escaping (Resolver) throws -> Instance,

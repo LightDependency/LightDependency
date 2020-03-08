@@ -63,7 +63,7 @@ public struct ResolvingStackItem: CustomStringConvertible {
     public let registrationPlace: DebugInfo
     public let resolutionPlace: DebugInfo
     public let setUpPlace: DebugInfo?
-    
+
     init(dependencyKey: DependencyKey,
          resolvingContainer: DependencyContainer,
          registrationOwnerContainer: DependencyContainer,
@@ -80,7 +80,7 @@ public struct ResolvingStackItem: CustomStringConvertible {
         self.resolutionPlace = resolutionPlace
         self.setUpPlace = setUpPlace
     }
-    
+
     public var description: String {
         return formatDescription(drop: nil)
     }

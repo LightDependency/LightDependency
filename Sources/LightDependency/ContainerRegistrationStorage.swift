@@ -7,23 +7,22 @@ final class ContainerRegistrationStorage {
     init(registrations: [ObjectIdentifier: [NameKey: [DependencyRegistrationType]]]) {
         self.registrations = registrations
     }
-    
+
     func getRegistrations<Dependency>(withName name: String?) -> [AnyDependencyRegistration<Dependency>] {
         let typeID = ObjectIdentifier(Dependency.self)
         let nameKey = NameKey(name: name)
         return registrations[typeID, default: [:]][nameKey, default: []]
             as! [AnyDependencyRegistration<Dependency>]
     }
-    
+
     func getAllRegistrations<Dependency>(for type: Dependency.Type) -> [(String?, AnyDependencyRegistration<Dependency>)] {
         let registrationsForDependency = registrations[ObjectIdentifier(type), default: [:]]
-
 
         return registrationsForDependency.flatMap { key, values in
             values.map { value in ( key.name, value as! AnyDependencyRegistration<Dependency>) }
         }
     }
-    
+
     func getAllRegistrations() -> [DependencyRegistrationType] {
         registrations.values.flatMap { $0.values.flatMap { $0 } }
     }
@@ -47,7 +46,7 @@ final class ContainerRegistrationStorageBuilder: RegistrationStorage {
 
         let dependencyRegistrationForOptional = TransformedDependencyRegistration(
             original: dependencyRegistration,
-            transform: { $0 as Optional<Dependency> }
+            transform: { $0 as Dependency? }
         )
 
         add(dependencyRegistration)

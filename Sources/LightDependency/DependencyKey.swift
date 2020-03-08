@@ -6,7 +6,7 @@ public struct DependencyKey: Equatable {
         self.type = type
         self.name = name
     }
-    
+
     public static func == (lhs: DependencyKey, rhs: DependencyKey) -> Bool {
         return lhs.type == rhs.type && lhs.name == rhs.name
     }

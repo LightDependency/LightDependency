@@ -10,7 +10,7 @@ final class InstanceStorage {
             instances[DependencyKey(T.self, name)] as? T
         }
     }
-    
+
     func save<T>(instance: T, name: String?) {
         lock.withWriterLock {
             instances[DependencyKey(T.self, name)] = instance

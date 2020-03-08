@@ -13,7 +13,7 @@ private struct AddRegistrationActionArgs<Instance> {
 }
 
 public final class RegistrationConfig<Instance> {
-    private typealias AddRegistrationAction = (AddRegistrationActionArgs<Instance>) -> ()
+    private typealias AddRegistrationAction = (AddRegistrationActionArgs<Instance>) -> Void
 
     private let factory: (Resolver) throws -> Instance
     private var configSettings: ConfigSettings = ConfigSettings()
@@ -144,17 +144,17 @@ extension RegistrationConfig {
     public func asTransient() -> RegistrationConfig {
         return withLifestyle(.transient)
     }
-    
+
     @discardableResult
     public func asSingleton() -> RegistrationConfig {
         return withLifestyle(.singleton)
     }
-    
+
     @discardableResult
     public func perContainer() -> RegistrationConfig {
         return withLifestyle(.container)
     }
-    
+
     @discardableResult
     public func asScoped(_ name: String) -> RegistrationConfig {
         return withLifestyle(.scoped(name))

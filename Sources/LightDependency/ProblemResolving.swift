@@ -25,6 +25,6 @@ func getAllowableRegistrations(in container: DependencyContainer) -> String {
         let primaryRegistrationsKeys = primaryRegistrations.map { $0.key }
         lines.append(contentsOf: primaryRegistrationsKeys.map { "    " + $0.description })
     }
-    
+
     return lines.joined(separator: "\n")
 }

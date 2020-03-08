@@ -155,12 +155,12 @@ final class SetUpInstanceTests: XCTestCase {
                 $0.z = try $1.resolve()
             }
 
-            context.registerWithResolver { resolver -> DependencyC in
+            context.register { () -> DependencyC in
                 operations.append("resolve C")
                 return DependencyC()
             }.asSingleton()
 
-            context.registerWithResolver { resolver -> DependencyZ in
+            context.register { () -> DependencyZ in
                 operations.append("resolve Z")
                 return DependencyZ()
             }
