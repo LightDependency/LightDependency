@@ -73,6 +73,22 @@ public final class RegistrationConfig<Instance> {
         return self
     }
 
+    @discardableResult
+    public func setUp(
+        file: StaticString = #file,
+        line: UInt = #line,
+        _ setUp: @escaping (Instance) throws -> Void
+    ) -> Self {
+
+        let setUpAction = SetUpAction(
+            action: { instance, _ in try setUp(instance) },
+            debugInfo: DebugInfo(file: file, line: line)
+        )
+
+        setUpActions.append(setUpAction)
+        return self
+    }
+
     func addToContext(_ storage: RegistrationStorage) {
         let helper = RegistrationHelper(
             storage: storage,

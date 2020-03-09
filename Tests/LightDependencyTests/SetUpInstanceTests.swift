@@ -8,7 +8,7 @@ final class SetUpInstanceTests: XCTestCase {
 
         let container = DependencyContainer { context in
             context.register(TestDependency.init)
-                .setUp { _, _ in setUpCounter += 1 }
+                .setUp { _ in setUpCounter += 1 }
         }
 
         let _: TestDependency = try container.resolve()
@@ -19,12 +19,12 @@ final class SetUpInstanceTests: XCTestCase {
         var setUpOrder: [Int] = []
         let container = DependencyContainer { context in
             context.register(TestDependency.init)
-                .setUp { _, _ in setUpOrder.append(0) }
-                .setUp { _, _ in setUpOrder.append(1) }
-                .setUp { _, _ in setUpOrder.append(2) }
-                .setUp { _, _ in setUpOrder.append(3) }
-                .setUp { _, _ in setUpOrder.append(4) }
-                .setUp { _, _ in setUpOrder.append(5) }
+                .setUp { _ in setUpOrder.append(0) }
+                .setUp { _ in setUpOrder.append(1) }
+                .setUp { _ in setUpOrder.append(2) }
+                .setUp { _ in setUpOrder.append(3) }
+                .setUp { _ in setUpOrder.append(4) }
+                .setUp { _ in setUpOrder.append(5) }
         }
 
         let _: TestDependency = try container.resolve()
