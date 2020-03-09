@@ -29,6 +29,7 @@ struct ClosureSetUpAction {
 final class Registration<Instance, Dependency> {
     let name: String?
     let lifestyle: InstanceLifestyle
+    let initializerDependencies: [KnownDependency]?
     let factory: (Resolver) throws -> Instance
     let setUpActions: [SetUpAction<Instance>]
     let casting: (Instance) -> Dependency
@@ -37,6 +38,7 @@ final class Registration<Instance, Dependency> {
 
     init(name: String?,
          lifestyle: InstanceLifestyle,
+         initializerDependencies: [KnownDependency]?,
          factory: @escaping (Resolver) throws -> Instance,
          setUpActions: [SetUpAction<Instance>],
          casting: @escaping (Instance) -> Dependency,
@@ -45,6 +47,7 @@ final class Registration<Instance, Dependency> {
     ) {
         self.name = name
         self.lifestyle = lifestyle
+        self.initializerDependencies = initializerDependencies
         self.factory = factory
         self.setUpActions = setUpActions
         self.casting = casting
@@ -148,6 +151,7 @@ final class AnyRegistration {
     let dependencyKey: DependencyKey
     let lifestyle: InstanceLifestyle
     let primaryDependency: DependencyKey?
+    let initializerDependencies: [KnownDependency]?
     let debugInfo: DebugInfo
     let factory: Any
 
@@ -155,6 +159,7 @@ final class AnyRegistration {
         dependencyKey = DependencyKey(Dependency.self, registration.name)
         lifestyle = registration.lifestyle
         primaryDependency = nil
+        initializerDependencies = registration.initializerDependencies
         debugInfo = registration.debugInfo
         factory = DependencyFactory(
             create: registration.createDependency(resolver:),
@@ -170,6 +175,7 @@ final class AnyRegistration {
         dependencyKey = DependencyKey(TransformedDependency.self, registration.name)
         lifestyle = registration.lifestyle
         primaryDependency = DependencyKey(Dependency.self, registration.name)
+        initializerDependencies = registration.initializerDependencies
         debugInfo = registration.debugInfo
         
         let factory = DependencyFactory(

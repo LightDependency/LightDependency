@@ -56,10 +56,6 @@ class Type7 {
 class ResultType {
     var value: String
 
-    init(_ value: String) {
-        self.value = value
-    }
-
     init(_ t1: Type1) {
         value = t1.value
     }
@@ -86,5 +82,10 @@ class ResultType {
 
     init(_ t1: Type1, _ t2: Type2, _ t3: Type3, _ t4: Type4, _ t5: Type5, _ t6: Type6, _ t7: Type7) {
         value = [t1.value, t2.value, t3.value, t4.value, t5.value, t6.value, t7.value].joined(separator: " ")
+    }
+}
+
+class InstanceWithoutDependencies {
+    init() {
     }
 }

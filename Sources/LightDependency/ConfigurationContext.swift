@@ -19,7 +19,7 @@ public final class ConfigurationContext {
 
         let config = RegistrationConfig(
             factory: factory,
-            knownInitDependencies: nil,
+            initializerDependencies: nil,
             defaultLifestyle: defaultLifestyle,
             debugInfo: DebugInfo(file: file, line: line)
         )

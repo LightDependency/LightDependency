@@ -3,13 +3,13 @@ extension ConfigurationContext {
     @inline(__always)
     func _register<Instance>(
         debugInfo: DebugInfo,
-        knownInitDependencies: [KnownDependency],
+        initializerDependencies: [KnownDependency],
         _ factory: @escaping (ResolverType) throws -> Instance
     ) -> RegistrationConfig<Instance> {
 
         let config = RegistrationConfig(
             factory: factory,
-            knownInitDependencies: knownInitDependencies,
+            initializerDependencies: initializerDependencies,
             defaultLifestyle: defaultLifestyle,
             debugInfo: debugInfo
         )
@@ -26,7 +26,7 @@ extension ConfigurationContext {
     ) -> RegistrationConfig<Instance> {
         _register(
             debugInfo: DebugInfo(file: file, line: line),
-            knownInitDependencies: []
+            initializerDependencies: []
         ) { _ in
             try factory(())
         }
@@ -40,7 +40,7 @@ extension ConfigurationContext {
     ) -> RegistrationConfig<Instance> {
         _register(
             debugInfo: DebugInfo(file: file, line: line),
-            knownInitDependencies: [.single(DependencyKey(Dep.self, nil))]
+            initializerDependencies: [.single(DependencyKey(Dep.self, nil))]
         ) { resolver in
             try factory(resolver.resolve(file: file, line: line))
         }
@@ -54,7 +54,7 @@ extension ConfigurationContext {
     ) -> RegistrationConfig<Instance> {
         _register(
             debugInfo: DebugInfo(file: file, line: line),
-            knownInitDependencies: [
+            initializerDependencies: [
                 .single(DependencyKey(Dep.self, nil)),
                 .single(DependencyKey(Dep2.self, nil))
             ]
@@ -71,7 +71,7 @@ extension ConfigurationContext {
     ) -> RegistrationConfig<Instance> {
         _register(
             debugInfo: DebugInfo(file: file, line: line),
-            knownInitDependencies: [
+            initializerDependencies: [
                 .single(DependencyKey(Dep.self, nil)),
                 .single(DependencyKey(Dep2.self, nil)),
                 .single(DependencyKey(Dep3.self, nil))
@@ -89,7 +89,7 @@ extension ConfigurationContext {
     ) -> RegistrationConfig<Instance> {
         _register(
             debugInfo: DebugInfo(file: file, line: line),
-            knownInitDependencies: [
+            initializerDependencies: [
                 .single(DependencyKey(Dep.self, nil)),
                 .single(DependencyKey(Dep2.self, nil)),
                 .single(DependencyKey(Dep3.self, nil)),
@@ -108,7 +108,7 @@ extension ConfigurationContext {
     ) -> RegistrationConfig<Instance> {
         _register(
             debugInfo: DebugInfo(file: file, line: line),
-            knownInitDependencies: [
+            initializerDependencies: [
                 .single(DependencyKey(Dep.self, nil)),
                 .single(DependencyKey(Dep2.self, nil)),
                 .single(DependencyKey(Dep3.self, nil)),
@@ -128,7 +128,7 @@ extension ConfigurationContext {
     ) -> RegistrationConfig<Instance> {
         _register(
             debugInfo: DebugInfo(file: file, line: line),
-            knownInitDependencies: [
+            initializerDependencies: [
                 .single(DependencyKey(Dep.self, nil)),
                 .single(DependencyKey(Dep2.self, nil)),
                 .single(DependencyKey(Dep3.self, nil)),
@@ -149,7 +149,7 @@ extension ConfigurationContext {
     ) -> RegistrationConfig<Instance> {
         _register(
             debugInfo: DebugInfo(file: file, line: line),
-            knownInitDependencies: [
+            initializerDependencies: [
                 .single(DependencyKey(Dep.self, nil)),
                 .single(DependencyKey(Dep2.self, nil)),
                 .single(DependencyKey(Dep3.self, nil)),

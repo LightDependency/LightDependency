@@ -349,6 +349,17 @@ extension ConfigurationContext {
 
     @inline(__always)
     private func addTransientRegistration<T>(factory: @escaping (Resolver) throws -> T, debugInfo: DebugInfo) {
-        add(Registration(name: nil, lifestyle: .transient, factory: factory, setUpActions: [], casting: { $0 }, debugInfo: debugInfo))
+        
+        let registration = Registration(
+            name: nil,
+            lifestyle: .transient,
+            initializerDependencies: [],
+            factory: factory,
+            setUpActions: [],
+            casting: { $0 },
+            debugInfo: debugInfo
+        )
+
+        add(registration)
     }
 }
