@@ -27,7 +27,7 @@ final class ReadWriteLock {
 
 extension ReadWriteLock {
     @inlinable
-    internal func withReaderLock<T>(_ action: () throws -> T) rethrows -> T {
+    func withReaderLock<T>(_ action: () throws -> T) rethrows -> T {
         lockRead()
         defer { unlock() }
 
@@ -35,7 +35,7 @@ extension ReadWriteLock {
     }
 
     @inlinable
-    internal func withWriterLock<T>(_ action: () throws -> T) rethrows -> T {
+    func withWriterLock<T>(_ action: () throws -> T) rethrows -> T {
         lockWrite()
         defer { unlock() }
         return try action()

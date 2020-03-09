@@ -1,5 +1,5 @@
 protocol RegistrationStorage {
-    func add<Instance, Dependency>(_ registration: Registration<Instance, Dependency>, debugInfo: DebugInfo)
+    func add<Instance, Dependency>(_ registration: Registration<Instance, Dependency>)
 }
 
 public final class ConfigurationContext {
@@ -19,12 +19,17 @@ public final class ConfigurationContext {
 
         let config = RegistrationConfig(
             factory: factory,
+            knownInitDependencies: nil,
             defaultLifestyle: defaultLifestyle,
             debugInfo: DebugInfo(file: file, line: line)
         )
 
         registrationActions.append(config.addToContext(_:))
         return config
+    }
+
+    func addAction(_ action: @escaping (RegistrationStorage) -> Void) {
+        registrationActions.append(action)
     }
 
     func apply(to registrationStorage: RegistrationStorage) {
@@ -35,9 +40,9 @@ public final class ConfigurationContext {
 }
 
 extension ConfigurationContext: RegistrationStorage {
-    func add<Instance, Dependency>(_ registration: Registration<Instance, Dependency>, debugInfo: DebugInfo) {
+    func add<Instance, Dependency>(_ registration: Registration<Instance, Dependency>) {
         let action = { (storage: RegistrationStorage) in
-            storage.add(registration, debugInfo: debugInfo)
+            storage.add(registration)
         }
 
         registrationActions.append(action)

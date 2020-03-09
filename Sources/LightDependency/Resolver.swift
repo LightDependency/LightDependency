@@ -36,7 +36,7 @@ public final class Resolver: ResolverType {
         var results: [Dependency] = []
 
         for registrationInfo in filteredRegistrations {
-            let dependency = try resolve(registrationInfo, file, line)
+            let dependency: Dependency = try resolve(registrationInfo, file, line)
             results.append(dependency)
         }
 
@@ -56,8 +56,8 @@ public final class Resolver: ResolverType {
         var dict: [String: Dependency] = [:]
 
         for registrationInfo in filteredRegistrations {
-            guard let name = registrationInfo.name else { continue }
-            let dependency = try resolve(registrationInfo, file, line)
+            guard let name = registrationInfo.registration.dependencyKey.name else { continue }
+            let dependency: Dependency = try resolve(registrationInfo, file, line)
             dict[name] = dependency
         }
 
@@ -73,13 +73,14 @@ public final class Resolver: ResolverType {
     }
 
     private func resolve<Dependency>(name: String?, file: StaticString, line: UInt) throws -> Dependency {
-        let registrations = findDependencyRegistrations(ofType: Dependency.self, withName: name, in: resolvingContainer)
+        let key = DependencyKey(Dependency.self, name)
+        let registrations = findDependencyRegistrations(for: key, in: resolvingContainer)
 
         guard registrations.count == 1 else {
             if registrations.count == 0 {
-                throw errorWhenRegistrationsNotFound(type: Dependency.self, name: name, file: file, line: line)
+                throw errorWhenRegistrationsNotFound(key: key, file: file, line: line)
             } else {
-                throw errorWhenMultipleRegistrationsFound(registrations, name: name, file: file, line: line)
+                throw errorWhenMultipleRegistrationsFound(registrations, key: key, file: file, line: line)
             }
         }
 
@@ -87,18 +88,18 @@ public final class Resolver: ResolverType {
         return try resolve(registrationInfo, file, line)
     }
 
-    private func filterOverriddenDependencies<Dependency>(
-        _ registrations: [RegistrationInfo<Dependency>],
+    private func filterOverriddenDependencies(
+        _ registrations: [RegistrationInfo],
         target: ResolveMultipleInstancesSearchTarget)
-        -> [RegistrationInfo<Dependency>] {
+        -> [RegistrationInfo] {
 
             guard target == .containerHierarchy else { return registrations }
 
-            var noNamedRegistrations: [RegistrationInfo<Dependency>] = []
-            var namedRegistrations: [String: RegistrationInfo<Dependency>] = [:]
+            var noNamedRegistrations: [RegistrationInfo] = []
+            var namedRegistrations: [String: RegistrationInfo] = [:]
 
             for registrationInfo in registrations.reversed() {
-                switch registrationInfo.name {
+                switch registrationInfo.registration.dependencyKey.name {
                 case let .some(name): namedRegistrations[name] = registrationInfo
                 case .none: noNamedRegistrations.append(registrationInfo)
                 }
@@ -115,14 +116,12 @@ public final class Resolver: ResolverType {
         ResolvingStack(queueInfo: queue.info)
     }
 
-    private func errorWhenRegistrationsNotFound<Dependency>(
-        type: Dependency.Type,
-        name: String?,
+    private func errorWhenRegistrationsNotFound(
+        key: DependencyKey,
         file: StaticString,
         line: UInt
     ) -> DependencyResolutionError {
-        let containerThatCanResolveInfo: DebugRegistrationInfo<Dependency>? =
-            findContainerThatCanResolve(with: name)
+        let containerThatCanResolveInfo = findContainerThatCanResolve(for: key)
 
         let errorType: DependencyResolutionError.ErrorType
         let additionalInfo: String
@@ -137,31 +136,31 @@ public final class Resolver: ResolverType {
 
         return DependencyResolutionError(
             errorType: errorType,
-            dependencyType: Dependency.self,
-            dependencyName: name,
+            dependencyType: key.type,
+            dependencyName: key.name,
             resolvingStack: getResolvingStack(),
             additionalInfo: additionalInfo,
             file: file,
             line: line)
     }
 
-    private func errorWhenMultipleRegistrationsFound<Dependency>(
-        _ registrations: [RegistrationInfo<Dependency>],
-        name: String?,
+    private func errorWhenMultipleRegistrationsFound(
+        _ registrations: [RegistrationInfo],
+        key: DependencyKey,
         file: StaticString,
         line: UInt
     ) -> DependencyResolutionError {
         DependencyResolutionError(
             errorType: .tryingToResolveSingleDependencyWhenMultipleAreRegistered,
-            dependencyType: Dependency.self,
-            dependencyName: name,
+            dependencyType: key.type,
+            dependencyName: key.name,
             resolvingStack: getResolvingStack(),
             additionalInfo: createHelpInfoForMultipleRegistrations(registrations),
             file: file,
             line: line)
     }
 
-    private func findContainerThatCanResolve<Dependency>(with name: String?) -> DebugRegistrationInfo<Dependency>? {
+    private func findContainerThatCanResolve(for key: DependencyKey) -> DebugRegistrationInfo? {
         var currentContainer = resolvingContainer
 
         let resolvingStack = getResolvingStack()
@@ -169,7 +168,7 @@ public final class Resolver: ResolverType {
             guard currentContainer !== stackItem.resolvingContainer else { continue }
             currentContainer = stackItem.resolvingContainer
 
-            let registrations = findDependencyRegistrations(ofType: Dependency.self, withName: name, in: currentContainer)
+            let registrations = findDependencyRegistrations(for: key, in: currentContainer)
             switch registrations.count {
             case 0: continue
             case 1: return DebugRegistrationInfo(registrationInfo: registrations[0], stackItem: stackItem)
@@ -181,14 +180,14 @@ public final class Resolver: ResolverType {
     }
 
     private func resolve<Dependency>(
-        _ registrationInfo: RegistrationInfo<Dependency>,
+        _ registrationInfo: RegistrationInfo,
         _ file: StaticString,
         _ line: UInt
     ) throws -> Dependency {
         let resolutionPlace = DebugInfo(file: file, line: line)
 
         let stackItem = ResolvingStackItem(
-            dependencyKey: registrationInfo.key,
+            dependencyKey: registrationInfo.registration.dependencyKey,
             resolvingContainer: resolvingContainer,
             registrationOwnerContainer: registrationInfo.owner,
             registrationPlace: registrationInfo.registration.debugInfo,

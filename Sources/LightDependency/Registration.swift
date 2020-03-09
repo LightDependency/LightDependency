@@ -26,50 +26,158 @@ struct ClosureSetUpAction {
     }
 }
 
-struct Registration<Instance, Dependency> {
+final class Registration<Instance, Dependency> {
     let name: String?
     let lifestyle: InstanceLifestyle
     let factory: (Resolver) throws -> Instance
     let setUpActions: [SetUpAction<Instance>]
     let casting: (Instance) -> Dependency
-    let lock: RegistrationLock?
+    let lock: RegistrationLock
+    let debugInfo: DebugInfo
 
-    init(name: String? = nil,
-                lifestyle: InstanceLifestyle,
-                factory: @escaping (Resolver) throws -> Instance,
-                setUpActions: [SetUpAction<Instance>],
-                casting: @escaping (Instance) -> Dependency,
-                lock: RegistrationLock? = nil) {
+    init(name: String?,
+         lifestyle: InstanceLifestyle,
+         factory: @escaping (Resolver) throws -> Instance,
+         setUpActions: [SetUpAction<Instance>],
+         casting: @escaping (Instance) -> Dependency,
+         lock: RegistrationLock = .init(),
+         debugInfo: DebugInfo
+    ) {
         self.name = name
         self.lifestyle = lifestyle
         self.factory = factory
         self.setUpActions = setUpActions
         self.casting = casting
         self.lock = lock
+        self.debugInfo = debugInfo
     }
 }
 
-final class RegistrationLock {
-    private var _lock = os_unfair_lock()
+struct CreateDependencyResult<Dependency> {
+    let dependency: Dependency
+    let setUpActions: [ClosureSetUpAction]
+}
 
-    init() {
+extension Registration {
+    fileprivate func createDependency(resolver: Resolver) throws -> CreateDependencyResult<Dependency> {
+        let instance = try factory(resolver)
+        let dependency = casting(instance)
+
+        let setUpActions = self.setUpActions.map { action in action.carryingInstance(instance) }
+
+        return CreateDependencyResult(dependency: dependency, setUpActions: setUpActions)
     }
 
-    func lock() {
-        os_unfair_lock_lock(&_lock)
+    fileprivate func createAndSaveDependency(resolver: Resolver, storage: InstanceStorage) throws
+        -> CreateDependencyResult<Dependency>
+    {
+        lock.lock()
+
+        if let existingInstance: Instance = storage.getInstance(with: name) {
+            lock.unlock()
+            let dependency = casting(existingInstance)
+            return CreateDependencyResult(dependency: dependency, setUpActions: [])
+        }
+
+        let instance: Instance = try _do({
+            let instance = try factory(resolver)
+            storage.save(instance: instance, name: name)
+            return instance
+        }, finally: lock.unlock)
+
+        let dependency = casting(instance)
+
+        let setUpActions = self.setUpActions.map { action in action.carryingInstance(instance) }
+
+        return CreateDependencyResult(dependency: dependency, setUpActions: setUpActions)
     }
 
-    func unlock() {
-        os_unfair_lock_unlock(&_lock)
+    fileprivate func getFromStorage(storage: InstanceStorage) -> Dependency? {
+        storage.getInstance(with: name)
     }
 }
 
-extension Registration where Instance == Dependency {
-    init(name: String? = nil,
-         lifestyle: InstanceLifestyle,
-         factory: @escaping (Resolver) throws -> Instance,
-         setUpActions: [SetUpAction<Instance>] = []
+struct DependencyFactory<Dependency> {
+    typealias CreateDependency = (Resolver) throws -> CreateDependencyResult<Dependency>
+    typealias CreateAndSaveDependency = (Resolver, InstanceStorage) throws -> CreateDependencyResult<Dependency>
+    typealias GetFromStorage = (InstanceStorage) -> Dependency?
+
+    let create: CreateDependency
+    let createAndSave: CreateAndSaveDependency
+    let getFromStorage: GetFromStorage
+}
+
+extension DependencyFactory {
+    fileprivate func map<Transformed>(_ transform: @escaping (Dependency) -> Transformed) -> DependencyFactory<Transformed> {
+        DependencyFactory<Transformed>(
+            create: { [create] resolver in
+                let result = try create(resolver)
+
+                return CreateDependencyResult(
+                    dependency: transform(result.dependency),
+                    setUpActions: result.setUpActions
+                )
+            },
+            createAndSave: { [createAndSave] resolver, storage in
+                let result = try createAndSave(resolver, storage)
+
+                return CreateDependencyResult(
+                    dependency: transform(result.dependency),
+                    setUpActions: result.setUpActions
+                )
+            },
+            getFromStorage: { [getFromStorage] storage in
+                getFromStorage(storage).map(transform)
+            }
+        )
+    }
+}
+
+extension DependencyFactory {
+    @inline(__always)
+    func createAndSaveIfNeeded(resolver: Resolver, storage: InstanceStorage?) throws -> CreateDependencyResult<Dependency> {
+        if let storage = storage {
+            return try createAndSave(resolver, storage)
+        } else {
+            return try create(resolver)
+        }
+    }
+}
+
+final class AnyRegistration {
+    let dependencyKey: DependencyKey
+    let lifestyle: InstanceLifestyle
+    let primaryDependency: DependencyKey?
+    let debugInfo: DebugInfo
+    let factory: Any
+
+    init<Instance, Dependency>(_ registration: Registration<Instance, Dependency>) {
+        dependencyKey = DependencyKey(Dependency.self, registration.name)
+        lifestyle = registration.lifestyle
+        primaryDependency = nil
+        debugInfo = registration.debugInfo
+        factory = DependencyFactory(
+            create: registration.createDependency(resolver:),
+            createAndSave: registration.createAndSaveDependency(resolver:storage:),
+            getFromStorage: registration.getFromStorage(storage:)
+        )
+    }
+
+    init<Instance, Dependency, TransformedDependency>(
+        _ registration: Registration<Instance, Dependency>,
+        _ transform: @escaping (Dependency) -> TransformedDependency
     ) {
-        self.init(name: name, lifestyle: lifestyle, factory: factory, setUpActions: setUpActions, casting: { $0 })
+        dependencyKey = DependencyKey(TransformedDependency.self, registration.name)
+        lifestyle = registration.lifestyle
+        primaryDependency = DependencyKey(Dependency.self, registration.name)
+        debugInfo = registration.debugInfo
+        
+        let factory = DependencyFactory(
+            create: registration.createDependency(resolver:),
+            createAndSave: registration.createAndSaveDependency(resolver:storage:),
+            getFromStorage: registration.getFromStorage(storage:)
+        )
+
+        self.factory = factory.map(transform)
     }
 }

@@ -339,13 +339,16 @@ extension ConfigurationContext {
 
 extension ConfigurationContext {
     private func addRegistration<T>(_ debugInfo: DebugInfo, _ factory: @escaping (Resolver) throws -> T) {
-        add(Registration(lifestyle: .transient, factory: factory), debugInfo: debugInfo)
+        addTransientRegistration(factory: factory, debugInfo: debugInfo)
     }
-}
 
-extension ConfigurationContext {
-    fileprivate func addInstance<T>(_ value: T, initiatedFrom: DebugInfo, file: StaticString = #file, line: UInt = #line) {
+    private func addInstance<T>(_ value: T, initiatedFrom: DebugInfo, file: StaticString = #file, line: UInt = #line) {
         let debugInfo = DebugInfo(file: file, line: line, initiatedFrom: initiatedFrom)
-        add(Registration(lifestyle: .transient, factory: { _ in value }), debugInfo: debugInfo)
+        addTransientRegistration(factory: { _ in value }, debugInfo: debugInfo)
+    }
+
+    @inline(__always)
+    private func addTransientRegistration<T>(factory: @escaping (Resolver) throws -> T, debugInfo: DebugInfo) {
+        add(Registration(name: nil, lifestyle: .transient, factory: factory, setUpActions: [], casting: { $0 }, debugInfo: debugInfo))
     }
 }
